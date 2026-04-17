@@ -79,13 +79,13 @@ export function MonthView() {
           {week.days.map((day, dayIdx) => {
             const cellIndex = weekIdx * 7 + dayIdx;
             return (
-              <div key={day.date.toString()} data-cell-index={`${weekIdx}-${dayIdx}`}>
-                <MonthCell
-                  day={day}
-                  tabIndex={cellIndex === focusedIndex ? 0 : -1}
-                  onFocus={() => setFocusedIndex(cellIndex)}
-                />
-              </div>
+              <MonthCell
+                key={day.date.toString()}
+                day={day}
+                tabIndex={cellIndex === focusedIndex ? 0 : -1}
+                onFocus={() => setFocusedIndex(cellIndex)}
+                data-cell-index={`${weekIdx}-${dayIdx}`}
+              />
             );
           })}
         </div>
