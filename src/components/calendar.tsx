@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import type { CalendarDate } from "@internationalized/date";
 import { today, getLocalTimeZone } from "@internationalized/date";
 import type { CalendarEvent, ViewMode, WeekStartDay } from "../types";
@@ -62,6 +62,22 @@ export function Calendar({
 
   const [popoverEvent, setPopoverEvent] = useState<CalendarEvent | null>(null);
   const [popoverAnchor, setPopoverAnchor] = useState<DOMRect | null>(null);
+
+  useEffect(() => {
+    const seen = new Set<string>();
+    const duplicates = new Set<string>();
+    for (const event of events) {
+      if (seen.has(event.id)) duplicates.add(event.id);
+      else seen.add(event.id);
+    }
+    if (duplicates.size > 0) {
+      console.warn(
+        `[react-timegrid] Duplicate event id(s) detected: ${[...duplicates]
+          .map((id) => `"${id}"`)
+          .join(", ")}. Event ids must be unique.`,
+      );
+    }
+  }, [events]);
 
   const handleEventClick = useCallback(
     (event: CalendarEvent) => {

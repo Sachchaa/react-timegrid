@@ -140,4 +140,31 @@ describe("layoutTimedEvents", () => {
     const expectedHeight = (60 / (24 * 60)) * 100;
     expect(result[0].height).toBeCloseTo(expectedHeight, 1);
   });
+
+  it("clamps events that extend past the visible day boundary", () => {
+    const events: TimedEvent[] = [
+      {
+        id: "late",
+        title: "Late",
+        start: new CalendarDateTime(2026, 4, 16, 23, 0),
+        end: new CalendarDateTime(2026, 4, 16, 23, 59),
+      },
+    ];
+    const result = layoutTimedEvents(events, 0, 24);
+    expect(result[0].top + result[0].height).toBeLessThanOrEqual(100);
+  });
+
+  it("clamps events that start before the visible window", () => {
+    const events: TimedEvent[] = [
+      {
+        id: "early",
+        title: "Early",
+        start: new CalendarDateTime(2026, 4, 16, 6, 0),
+        end: new CalendarDateTime(2026, 4, 16, 10, 0),
+      },
+    ];
+    const result = layoutTimedEvents(events, 8, 18);
+    expect(result[0].top).toBe(0);
+    expect(result[0].height).toBeGreaterThan(0);
+  });
 });
