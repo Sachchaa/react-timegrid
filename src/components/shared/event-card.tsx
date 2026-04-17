@@ -33,7 +33,8 @@ export function EventCard({ positioned }: EventCardProps) {
     [onEventClick, event],
   );
 
-  const widthPercent = 100 / totalColumns;
+  const safeTotalColumns = Math.max(totalColumns, 1);
+  const widthPercent = 100 / safeTotalColumns;
   const leftPercent = column * widthPercent;
 
   const timeLabel =

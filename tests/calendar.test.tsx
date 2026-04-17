@@ -138,4 +138,50 @@ describe("Calendar component", () => {
     fireEvent.click(screen.getByText("Week"));
     expect(onViewChange).toHaveBeenCalledWith("week");
   });
+
+  it("respects controlled view prop", () => {
+    const { rerender } = render(
+      <Calendar
+        value={new CalendarDate(2026, 4, 16)}
+        view="month"
+        events={events}
+      />,
+    );
+    expect(screen.getByText("April 2026")).toBeInTheDocument();
+    rerender(
+      <Calendar
+        value={new CalendarDate(2026, 4, 16)}
+        view="day"
+        events={events}
+      />,
+    );
+    expect(screen.getByRole("grid", { name: "Time grid" })).toBeInTheDocument();
+  });
+
+  it("warns on duplicate event ids", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    render(
+      <Calendar
+        defaultValue={new CalendarDate(2026, 4, 16)}
+        events={[
+          {
+            id: "dup",
+            title: "First",
+            start: new CalendarDateTime(2026, 4, 16, 9, 0),
+            end: new CalendarDateTime(2026, 4, 16, 10, 0),
+          },
+          {
+            id: "dup",
+            title: "Second",
+            start: new CalendarDateTime(2026, 4, 16, 11, 0),
+            end: new CalendarDateTime(2026, 4, 16, 12, 0),
+          },
+        ]}
+      />,
+    );
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('"dup"'),
+    );
+    warn.mockRestore();
+  });
 });

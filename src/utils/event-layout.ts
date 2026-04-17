@@ -18,6 +18,11 @@ export function isTimedEvent(event: CalendarEvent): event is TimedEvent {
   return !event.allDay;
 }
 
+/**
+ * Returns events active on `date`. `event.end` is treated as INCLUSIVE for
+ * both all-day and timed events (an all-day event with start=end spans one
+ * day; a timed event ending at 23:00 on day N is returned for day N).
+ */
 export function getEventsForDate(
   events: CalendarEvent[],
   date: CalendarDate,
@@ -88,15 +93,18 @@ export function layoutTimedEvents(
     }
   }
 
-  const totalColumns = columns.length;
+  const totalColumns = Math.max(columns.length, 1);
   const positioned: PositionedEvent[] = [];
 
   for (let colIdx = 0; colIdx < columns.length; colIdx++) {
     for (const { event } of columns[colIdx]) {
-      const eventStartMinutes =
-        (getHourFromDateTime(event.start) - startHour) * 60;
-      const eventEndMinutes =
-        (getHourFromDateTime(event.end) - startHour) * 60;
+      const rawStart = (getHourFromDateTime(event.start) - startHour) * 60;
+      const rawEnd = (getHourFromDateTime(event.end) - startHour) * 60;
+      const eventStartMinutes = Math.max(0, Math.min(rawStart, totalMinutes));
+      const eventEndMinutes = Math.max(
+        eventStartMinutes,
+        Math.min(rawEnd, totalMinutes),
+      );
 
       positioned.push({
         event,
