@@ -28,9 +28,15 @@ interface MonthCellProps {
   day: MonthGridDay;
   tabIndex: number;
   onFocus?: () => void;
+  "data-cell-index"?: string;
 }
 
-export function MonthCell({ day, tabIndex, onFocus }: MonthCellProps) {
+export function MonthCell({
+  day,
+  tabIndex,
+  onFocus,
+  "data-cell-index": dataCellIndex,
+}: MonthCellProps) {
   const { locale, onDateClick, onEventClick } = useCalendarContext();
   const cellRef = useRef<HTMLDivElement>(null);
 
@@ -64,6 +70,7 @@ export function MonthCell({ day, tabIndex, onFocus }: MonthCellProps) {
       ref={cellRef}
       role="gridcell"
       tabIndex={tabIndex}
+      data-cell-index={dataCellIndex}
       aria-label={getGridCellAriaLabel(day.date, locale, day.events.length)}
       className={`
         min-h-28 border-b border-r border-gray-200 p-1.5 cursor-pointer
