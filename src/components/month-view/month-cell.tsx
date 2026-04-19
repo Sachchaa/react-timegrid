@@ -6,23 +6,8 @@ import { isAllDayEvent } from "../../utils/event-layout";
 
 const MAX_VISIBLE_EVENTS = 3;
 
-const EVENT_COLORS: Record<string, string> = {
-  blue: "bg-blue-100 text-blue-800 border-l-blue-500",
-  red: "bg-red-100 text-red-800 border-l-red-500",
-  green: "bg-green-100 text-green-800 border-l-green-500",
-  purple: "bg-purple-100 text-purple-800 border-l-purple-500",
-  orange: "bg-orange-100 text-orange-800 border-l-orange-500",
-  yellow: "bg-yellow-100 text-yellow-800 border-l-yellow-500",
-  pink: "bg-pink-100 text-pink-800 border-l-pink-500",
-  indigo: "bg-indigo-100 text-indigo-800 border-l-indigo-500",
-};
-
-const DEFAULT_COLOR = "bg-blue-100 text-blue-800 border-l-blue-500";
-
-function getEventColorClass(color?: string): string {
-  if (!color) return DEFAULT_COLOR;
-  return EVENT_COLORS[color] ?? DEFAULT_COLOR;
-}
+const EVENT_CLASS =
+  "bg-accent text-accent-foreground border-l-primary";
 
 interface MonthCellProps {
   day: MonthGridDay;
@@ -73,10 +58,10 @@ export function MonthCell({
       data-cell-index={dataCellIndex}
       aria-label={getGridCellAriaLabel(day.date, locale, day.events.length)}
       className={`
-        min-h-28 border-b border-r border-gray-200 p-1.5 cursor-pointer
-        transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2
-        focus:ring-blue-500 focus:ring-inset
-        ${!day.isCurrentMonth ? "bg-gray-50/50" : "bg-white"}
+        min-h-28 border-b border-r border-border p-1.5 cursor-pointer
+        transition-colors hover:bg-accent/50 focus:outline-none focus:ring-2
+        focus:ring-ring focus:ring-inset
+        ${!day.isCurrentMonth ? "bg-muted/30" : "bg-card"}
       `}
       onClick={handleDateClick}
       onKeyDown={handleKeyDown}
@@ -85,8 +70,8 @@ export function MonthCell({
       <span
         className={`
           inline-flex h-7 w-7 items-center justify-center rounded-full text-sm
-          ${day.isToday ? "bg-blue-600 font-semibold text-white" : ""}
-          ${!day.isCurrentMonth ? "text-gray-400" : "text-gray-900"}
+          ${day.isToday ? "bg-primary font-semibold text-primary-foreground" : ""}
+          ${!day.isCurrentMonth ? "text-muted-foreground" : "text-foreground"}
         `}
       >
         {day.date.day}
@@ -101,7 +86,7 @@ export function MonthCell({
               block w-full truncate rounded border-l-2 px-1.5 py-0.5
               text-left text-xs font-medium
               transition-opacity hover:opacity-80
-              ${getEventColorClass(event.color)}
+              ${EVENT_CLASS}
             `}
             onClick={(e) => handleEventClick(e, event)}
             aria-label={event.title}
@@ -128,7 +113,7 @@ export function MonthCell({
         {overflowCount > 0 && (
           <button
             type="button"
-            className="w-full text-left text-xs font-medium text-gray-500 hover:text-gray-700 px-1.5"
+            className="w-full text-left text-xs font-medium text-muted-foreground hover:text-foreground px-1.5"
           >
             +{overflowCount} more
           </button>

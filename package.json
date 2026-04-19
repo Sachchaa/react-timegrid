@@ -1,6 +1,6 @@
 {
   "name": "react-timegrid",
-  "version": "0.1.0",
+  "version": "0.0.1-beta",
   "description": "A full-featured React calendar component with month, week, and day views",
   "type": "module",
   "main": "./dist/index.cjs",

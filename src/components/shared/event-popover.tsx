@@ -92,7 +92,7 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
       ref={popoverRef}
       role="dialog"
       aria-label={`Event details: ${event.title}`}
-      className="fixed z-50 w-72 rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
+      className="fixed z-50 w-72 rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-lg"
       style={{
         top: position?.top ?? 0,
         left: position?.left ?? 0,
@@ -100,11 +100,11 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
       }}
     >
       <div className="flex items-start justify-between">
-        <h3 className="text-sm font-semibold text-gray-900">{event.title}</h3>
+        <h3 className="text-sm font-semibold text-foreground">{event.title}</h3>
         <button
           type="button"
           onClick={onClose}
-          className="rounded p-0.5 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded p-0.5 text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           aria-label="Close"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -113,7 +113,7 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
         </button>
       </div>
 
-      <div className="mt-2 text-xs text-gray-500">
+      <div className="mt-2 text-xs text-muted-foreground">
         {isTimedEvent(event) ? (
           <>
             <p>{formatDate(event.start)}</p>
@@ -127,7 +127,7 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
             {event.start.compare(event.end) !== 0 && (
               <p>to {formatDate(event.end)}</p>
             )}
-            <p className="mt-1 font-medium text-gray-600">All day</p>
+            <p className="mt-1 font-medium text-foreground">All day</p>
           </>
         )}
       </div>

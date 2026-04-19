@@ -50,7 +50,7 @@ export function Header({ onNext, onPrev, onToday }: HeaderProps) {
     <div className="flex items-center justify-between px-4 py-3">
       <div className="flex items-center gap-3">
         <h2
-          className="text-lg font-semibold text-gray-900"
+          className="text-lg font-semibold text-foreground"
           aria-live="polite"
           aria-atomic="true"
         >
@@ -62,17 +62,17 @@ export function Header({ onNext, onPrev, onToday }: HeaderProps) {
         <button
           type="button"
           onClick={onToday}
-          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+          className="rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 focus:ring-offset-background"
         >
           Today
         </button>
 
-        <div className="flex items-center rounded-md border border-gray-300 shadow-sm">
+        <div className="flex items-center rounded-md border border-input shadow-sm">
           <button
             type="button"
             onClick={onPrev}
             aria-label="Previous"
-            className="rounded-l-md bg-white px-2.5 py-1.5 text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+            className="rounded-l-md bg-background px-2.5 py-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -82,7 +82,7 @@ export function Header({ onNext, onPrev, onToday }: HeaderProps) {
             type="button"
             onClick={onNext}
             aria-label="Next"
-            className="rounded-r-md border-l border-gray-300 bg-white px-2.5 py-1.5 text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+            className="rounded-r-md border-l border-input bg-background px-2.5 py-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -90,7 +90,7 @@ export function Header({ onNext, onPrev, onToday }: HeaderProps) {
           </button>
         </div>
 
-        <div className="flex rounded-md border border-gray-300 shadow-sm" role="tablist">
+        <div className="flex rounded-md border border-input shadow-sm" role="tablist">
           {VIEWS.map((v) => (
             <button
               key={v}
@@ -100,13 +100,13 @@ export function Header({ onNext, onPrev, onToday }: HeaderProps) {
               onClick={() => onViewChange(v)}
               className={`
                 px-3 py-1.5 text-sm font-medium first:rounded-l-md last:rounded-r-md
-                focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500
+                focus:outline-none focus:ring-2 focus:ring-inset focus:ring-ring
                 ${
                   view === v
-                    ? "bg-blue-600 text-white"
-                    : "bg-white text-gray-700 hover:bg-gray-50"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
                 }
-                ${v !== "month" ? "border-l border-gray-300" : ""}
+                ${v !== "month" ? "border-l border-input" : ""}
               `}
             >
               {VIEW_LABELS[v]}

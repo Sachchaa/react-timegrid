@@ -5,19 +5,6 @@ interface AllDayRowProps {
   events: AllDayEvent[];
 }
 
-const EVENT_COLORS: Record<string, string> = {
-  blue: "bg-blue-100 text-blue-800",
-  red: "bg-red-100 text-red-800",
-  green: "bg-green-100 text-green-800",
-  purple: "bg-purple-100 text-purple-800",
-  orange: "bg-orange-100 text-orange-800",
-  yellow: "bg-yellow-100 text-yellow-800",
-  pink: "bg-pink-100 text-pink-800",
-  indigo: "bg-indigo-100 text-indigo-800",
-};
-
-const DEFAULT_COLOR = "bg-blue-100 text-blue-800";
-
 export function AllDayRow({ events }: AllDayRowProps) {
   const { onEventClick } = useCalendarContext();
 
@@ -29,7 +16,7 @@ export function AllDayRow({ events }: AllDayRowProps) {
         <button
           key={event.id}
           type="button"
-          className={`truncate rounded px-2 py-0.5 text-xs font-medium transition-opacity hover:opacity-80 ${EVENT_COLORS[event.color ?? "blue"] ?? DEFAULT_COLOR}`}
+          className="truncate rounded border-l-2 border-l-primary bg-accent px-2 py-0.5 text-xs font-medium text-accent-foreground transition-opacity hover:opacity-80"
           onClick={() => onEventClick?.(event)}
           aria-label={event.title}
         >

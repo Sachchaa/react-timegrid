@@ -124,7 +124,7 @@ export function Calendar({
 
   return (
     <CalendarContext.Provider value={contextValue}>
-      <div className={`relative bg-white ${className ?? ""}`}>
+      <div className={`relative bg-background text-foreground ${className ?? ""}`}>
         <Header
           onNext={nav.goToNext}
           onPrev={nav.goToPrev}

@@ -19,7 +19,7 @@ export function TimeSlot({ date, hour }: TimeSlotProps) {
     <div
       role="gridcell"
       aria-label={getTimeSlotAriaLabel(hour, locale)}
-      className="h-12 border-b border-gray-100 transition-colors hover:bg-blue-50/40 cursor-pointer"
+      className="h-12 border-b border-border transition-colors hover:bg-accent/40 cursor-pointer"
       onClick={handleClick}
     />
   );

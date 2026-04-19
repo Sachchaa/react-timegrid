@@ -32,10 +32,10 @@ export function TimeGrid({
   const hasAnyAllDayEvents = columns.some((col) => col.allDayEvents.length > 0);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg border border-gray-200">
+    <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-card">
       {showDayHeaders && (
-        <div className="grid border-b border-gray-200 bg-gray-50" style={{ gridTemplateColumns: `4rem repeat(${columns.length}, 1fr)` }}>
-          <div className="border-r border-gray-200" />
+        <div className="grid border-b border-border bg-muted" style={{ gridTemplateColumns: `4rem repeat(${columns.length}, 1fr)` }}>
+          <div className="border-r border-border" />
           {columns.map((col) => {
             const isToday = isSameDay(col.date, todayDate);
             const dayName = new Intl.DateTimeFormat(displayLocale, { weekday: "short" }).format(
@@ -45,15 +45,15 @@ export function TimeGrid({
               <div
                 key={col.date.toString()}
                 className={`flex flex-col items-center py-2 text-center ${
-                  columns.length > 1 ? "border-r border-gray-200 last:border-r-0" : ""
+                  columns.length > 1 ? "border-r border-border last:border-r-0" : ""
                 }`}
               >
-                <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   {dayName}
                 </span>
                 <span
                   className={`mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold ${
-                    isToday ? "bg-blue-600 text-white" : "text-gray-900"
+                    isToday ? "bg-primary text-primary-foreground" : "text-foreground"
                   }`}
                 >
                   {col.date.day}
@@ -66,16 +66,16 @@ export function TimeGrid({
 
       {hasAnyAllDayEvents && (
         <div
-          className="grid border-b border-gray-200 bg-gray-50/50"
+          className="grid border-b border-border bg-muted/50"
           style={{ gridTemplateColumns: `4rem repeat(${columns.length}, 1fr)` }}
         >
-          <div className="flex items-center justify-center border-r border-gray-200 px-1 text-xs text-gray-400">
+          <div className="flex items-center justify-center border-r border-border px-1 text-xs text-muted-foreground">
             All day
           </div>
           {columns.map((col) => (
             <div
               key={`allday-${col.date.toString()}`}
-              className={`min-h-8 ${columns.length > 1 ? "border-r border-gray-200 last:border-r-0" : ""}`}
+              className={`min-h-8 ${columns.length > 1 ? "border-r border-border last:border-r-0" : ""}`}
             >
               <AllDayRow events={col.allDayEvents} />
             </div>
@@ -92,9 +92,9 @@ export function TimeGrid({
             {timeSlots.map((slot) => (
               <div
                 key={slot.hour}
-                className="flex h-12 items-start justify-end border-b border-gray-100 pr-2"
+                className="flex h-12 items-start justify-end border-b border-border pr-2"
               >
-                <span className="-mt-1.5 text-xs text-gray-400">{slot.label}</span>
+                <span className="-mt-1.5 text-xs text-muted-foreground">{slot.label}</span>
               </div>
             ))}
           </div>
@@ -102,7 +102,7 @@ export function TimeGrid({
           {columns.map((col) => (
             <div
               key={col.date.toString()}
-              className={`relative ${columns.length > 1 ? "border-r border-gray-200 last:border-r-0" : ""}`}
+              className={`relative ${columns.length > 1 ? "border-r border-border last:border-r-0" : ""}`}
             >
               {timeSlots.map((slot) => (
                 <TimeSlot
