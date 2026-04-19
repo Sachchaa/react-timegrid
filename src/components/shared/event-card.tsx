@@ -12,9 +12,9 @@ export function EventCard({ positioned }: EventCardProps) {
   const { event, top, height, column, totalColumns } = positioned;
 
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
-      onEventClick?.(event);
+      onEventClick?.(event, e.currentTarget.getBoundingClientRect());
     },
     [onEventClick, event],
   );

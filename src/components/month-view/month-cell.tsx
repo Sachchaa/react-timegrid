@@ -30,9 +30,9 @@ export function MonthCell({
   }, [onDateClick, day.date]);
 
   const handleEventClick = useCallback(
-    (e: React.MouseEvent, event: CalendarEvent) => {
+    (e: React.MouseEvent<HTMLElement>, event: CalendarEvent) => {
       e.stopPropagation();
-      onEventClick?.(event);
+      onEventClick?.(event, e.currentTarget.getBoundingClientRect());
     },
     [onEventClick],
   );

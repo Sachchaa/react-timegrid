@@ -80,12 +80,16 @@ export function Calendar({
   }, [events]);
 
   const handleEventClick = useCallback(
-    (event: CalendarEvent) => {
+    (event: CalendarEvent, anchorRect?: DOMRect) => {
       onEventClick?.(event);
 
-      const activeEl = document.activeElement;
-      if (activeEl instanceof HTMLElement) {
-        setPopoverAnchor(activeEl.getBoundingClientRect());
+      const rect =
+        anchorRect ??
+        (document.activeElement instanceof HTMLElement
+          ? document.activeElement.getBoundingClientRect()
+          : null);
+      if (rect) {
+        setPopoverAnchor(rect);
         setPopoverEvent(event);
       }
     },

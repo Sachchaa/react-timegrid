@@ -10,7 +10,7 @@ export interface CalendarContextValue {
   weekStartsOn: WeekStartDay;
   onNavigate: (date: CalendarDate) => void;
   onViewChange: (view: ViewMode) => void;
-  onEventClick?: (event: CalendarEvent) => void;
+  onEventClick?: (event: CalendarEvent, anchorRect?: DOMRect) => void;
   onDateClick?: (date: CalendarDate) => void;
 }
 

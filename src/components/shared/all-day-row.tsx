@@ -17,7 +17,9 @@ export function AllDayRow({ events }: AllDayRowProps) {
           key={event.id}
           type="button"
           className="flex h-8 w-full items-center truncate rounded border-l-2 border-l-primary bg-accent px-2 text-left text-xs font-medium text-accent-foreground transition-opacity hover:opacity-80"
-          onClick={() => onEventClick?.(event)}
+          onClick={(e) =>
+            onEventClick?.(event, e.currentTarget.getBoundingClientRect())
+          }
           aria-label={event.title}
         >
           <span className="truncate">{event.title}</span>
