@@ -34,7 +34,7 @@ export function TimeGrid({
   return (
     <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-card">
       {showDayHeaders && (
-        <div className="grid border-b border-border bg-muted" style={{ gridTemplateColumns: `4rem repeat(${columns.length}, 1fr)` }}>
+        <div className="grid border-b border-border bg-muted" style={{ gridTemplateColumns: `4.5rem repeat(${columns.length}, 1fr)` }}>
           <div className="border-r border-border" />
           {columns.map((col) => {
             const isToday = isSameDay(col.date, todayDate);
@@ -67,7 +67,7 @@ export function TimeGrid({
       {hasAnyAllDayEvents && (
         <div
           className="grid border-b border-border bg-muted/50"
-          style={{ gridTemplateColumns: `4rem repeat(${columns.length}, 1fr)` }}
+          style={{ gridTemplateColumns: `4.5rem repeat(${columns.length}, 1fr)` }}
         >
           <div className="flex items-center justify-center border-r border-border px-1 text-xs text-muted-foreground">
             All day
@@ -75,7 +75,7 @@ export function TimeGrid({
           {columns.map((col) => (
             <div
               key={`allday-${col.date.toString()}`}
-              className={`min-h-8 ${columns.length > 1 ? "border-r border-border last:border-r-0" : ""}`}
+              className={`min-h-10 ${columns.length > 1 ? "border-r border-border last:border-r-0" : ""}`}
             >
               <AllDayRow events={col.allDayEvents} />
             </div>
@@ -83,20 +83,31 @@ export function TimeGrid({
         </div>
       )}
 
-      <div className="max-h-[600px] overflow-y-auto" role="grid" aria-label="Time grid">
+      <div className="max-h-[800px] overflow-y-auto" role="grid" aria-label="Time grid">
         <div
           className="grid"
-          style={{ gridTemplateColumns: `4rem repeat(${columns.length}, 1fr)` }}
+          style={{ gridTemplateColumns: `4.5rem repeat(${columns.length}, 1fr)` }}
         >
           <div className="relative">
-            {timeSlots.map((slot) => (
-              <div
-                key={slot.hour}
-                className="flex h-12 items-start justify-end border-b border-border pr-2"
-              >
-                <span className="-mt-1.5 text-xs text-muted-foreground">{slot.label}</span>
-              </div>
-            ))}
+            {timeSlots.map((slot, idx) => {
+              const isHourBoundary = slot.minute === 30;
+              return (
+                <div
+                  key={`${slot.hour}-${slot.minute}`}
+                  className={`flex h-10 items-start justify-end border-b pr-2 ${
+                    isHourBoundary ? "border-border" : "border-border/40"
+                  }`}
+                >
+                  {slot.label && (
+                    <span
+                      className={`${idx === 0 ? "mt-1" : "-mt-1.5"} whitespace-nowrap bg-card px-0.5 text-xs text-muted-foreground`}
+                    >
+                      {slot.label}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           {columns.map((col) => (
@@ -106,9 +117,10 @@ export function TimeGrid({
             >
               {timeSlots.map((slot) => (
                 <TimeSlot
-                  key={`${col.date.toString()}-${slot.hour}`}
+                  key={`${col.date.toString()}-${slot.hour}-${slot.minute}`}
                   date={col.date}
                   hour={slot.hour}
+                  minute={slot.minute}
                 />
               ))}
 

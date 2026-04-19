@@ -165,6 +165,31 @@ export const EmptyCalendar: Story = {
   },
 };
 
+export const MidnightEvent: Story = {
+  args: {
+    defaultView: "day",
+    defaultValue: new CalendarDate(2026, 4, 16),
+    events: [
+      {
+        id: "midnight-1",
+        title: "Late night deploy",
+        start: new CalendarDateTime(2026, 4, 16, 0, 0),
+        end: new CalendarDateTime(2026, 4, 16, 1, 0),
+        color: "indigo",
+      },
+      {
+        id: "midnight-2",
+        title: "On-call handoff",
+        start: new CalendarDateTime(2026, 4, 16, 0, 30),
+        end: new CalendarDateTime(2026, 4, 16, 1, 30),
+        color: "red",
+      },
+    ],
+    locale: "en-US",
+    weekStartsOn: "sunday",
+  },
+};
+
 export const ManyEvents: Story = {
   args: {
     defaultView: "month",

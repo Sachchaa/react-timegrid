@@ -21,9 +21,11 @@ export function getGridCellAriaLabel(
 export function getTimeSlotAriaLabel(
   hour: number,
   locale: string,
+  minute: number = 0,
+  durationMinutes: number = 60,
 ): string {
-  const date = new Date(2000, 0, 1, hour);
-  const endDate = new Date(2000, 0, 1, hour + 1);
+  const date = new Date(2000, 0, 1, hour, minute);
+  const endDate = new Date(date.getTime() + durationMinutes * 60_000);
   const formatter = new Intl.DateTimeFormat(locale, {
     hour: "numeric",
     minute: "2-digit",

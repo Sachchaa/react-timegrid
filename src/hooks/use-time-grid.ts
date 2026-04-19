@@ -64,11 +64,13 @@ export function useTimeGrid(options: UseTimeGridOptions): UseTimeGridReturn {
 
     const timeSlots: TimeSlot[] = [];
     for (let h = startHour; h < endHour; h++) {
-      timeSlots.push({
-        hour: h,
-        minute: 0,
-        label: formatHour(h, locale),
-      });
+      for (const m of [0, 30]) {
+        timeSlots.push({
+          hour: h,
+          minute: m,
+          label: m === 0 ? formatHour(h, locale) : "",
+        });
+      }
     }
 
     return { columns, timeSlots, startHour, endHour };

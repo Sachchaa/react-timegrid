@@ -11,16 +11,16 @@ export function AllDayRow({ events }: AllDayRowProps) {
   if (events.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap gap-1 px-1 py-1">
+    <div className="flex flex-col gap-0.5 px-1 py-1">
       {events.map((event) => (
         <button
           key={event.id}
           type="button"
-          className="truncate rounded border-l-2 border-l-primary bg-accent px-2 py-0.5 text-xs font-medium text-accent-foreground transition-opacity hover:opacity-80"
+          className="flex h-8 w-full items-center truncate rounded border-l-2 border-l-primary bg-accent px-2 text-left text-xs font-medium text-accent-foreground transition-opacity hover:opacity-80"
           onClick={() => onEventClick?.(event)}
           aria-label={event.title}
         >
-          {event.title}
+          <span className="truncate">{event.title}</span>
         </button>
       ))}
     </div>
