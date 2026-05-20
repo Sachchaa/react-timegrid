@@ -16,14 +16,14 @@ A full-featured React calendar component with month, week, and day views. Built 
 ## Installation
 
 ```bash
-pnpm add react-timegrid
+pnpm add @codesutra/react-timegrid
 ```
 
 ## Quick Start
 
 ```tsx
-import { Calendar } from "react-timegrid";
-import "react-timegrid/styles.css";
+import { Calendar } from "@codesutra/react-timegrid";
+import "@codesutra/react-timegrid/styles.css";
 import { CalendarDate, CalendarDateTime } from "@internationalized/date";
 
 function App() {
