@@ -1,7 +1,7 @@
 {
   "name": "@codesutra/react-timegrid",
   "version": "0.0.1-beta",
-  "description": "A full-featured React calendar component with month, week, and day views",
+  "description": "A full-featured React calendar component with month, week, and day views (beta release)",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -88,7 +88,8 @@
     "day-view",
     "events",
     "schedule",
-    "tailwindcss"
+    "tailwindcss",
+    "beta"
   ],
   "packageManager": "pnpm@11.1.3",
   "engines": {

@@ -1,5 +1,7 @@
 # react-timegrid
 
+> **⚠️ Beta:** This package is in beta. The API may change before a stable `1.0.0` release, and some edges may still be rough. Please report issues you run into.
+
 A full-featured React calendar component with month, week, and day views. Built with `@internationalized/date` for timezone-aware, i18n-ready date handling, and styled with Tailwind CSS.
 
 ## Features
@@ -15,8 +17,10 @@ A full-featured React calendar component with month, week, and day views. Built 
 
 ## Installation
 
+This is a beta release, so install it from the `beta` dist-tag (or pin the exact `0.0.1-beta` version):
+
 ```bash
-pnpm add @codesutra/react-timegrid
+pnpm add @codesutra/react-timegrid@beta
 ```
 
 ## Quick Start
