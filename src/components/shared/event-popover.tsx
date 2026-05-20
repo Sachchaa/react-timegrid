@@ -1,7 +1,8 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CalendarEvent } from "../../types";
 import { useCalendarContext } from "../../context/calendar-context";
 import { isTimedEvent } from "../../utils/event-layout";
+import { useIsomorphicLayoutEffect } from "../../hooks/use-isomorphic-layout-effect";
 
 const VIEWPORT_MARGIN = 8;
 const FALLBACK_WIDTH = 288;
@@ -18,8 +19,8 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
   const popoverRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
 
-  useLayoutEffect(() => {
-    if (!anchorRect || !event) {
+  useIsomorphicLayoutEffect(() => {
+    if (!anchorRect || !event || typeof window === "undefined") {
       setPosition(null);
       return;
     }
@@ -46,7 +47,7 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
   }, [anchorRect, event]);
 
   useEffect(() => {
-    if (!event) return;
+    if (!event || typeof document === "undefined") return;
 
     function handleClickOutside(e: MouseEvent) {
       if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
@@ -89,11 +90,13 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
     }).format(new Date(dt.year, dt.month - 1, dt.day));
   };
 
+  const dialogLabel = event.title ? `Event details: ${event.title}` : "Event details";
+
   return (
     <div
       ref={popoverRef}
       role="dialog"
-      aria-label={`Event details: ${event.title}`}
+      aria-label={dialogLabel}
       className="fixed z-50 w-72 rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-lg"
       style={{
         top: position?.top ?? 0,
@@ -102,7 +105,7 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
       }}
     >
       <div className="flex items-start justify-between">
-        <h3 className="text-sm font-semibold text-foreground">{event.title}</h3>
+        <h3 className="text-sm font-semibold text-foreground">{event.title || "Untitled event"}</h3>
         <button
           type="button"
           onClick={onClose}

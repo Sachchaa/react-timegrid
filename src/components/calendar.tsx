@@ -1,4 +1,12 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ErrorInfo,
+  type ReactNode,
+} from "react";
 import type { CalendarDate } from "@internationalized/date";
 import { today, getLocalTimeZone } from "@internationalized/date";
 import type { CalendarEvent, ViewMode, WeekStartDay } from "../types";
@@ -9,6 +17,7 @@ import { MonthView } from "./month-view/month-view";
 import { WeekView } from "./week-view/week-view";
 import { DayView } from "./day-view/day-view";
 import { EventPopover } from "./shared/event-popover";
+import { ErrorBoundary } from "./error-boundary";
 
 export interface CalendarProps {
   /** Current view mode (controlled) */
@@ -33,24 +42,33 @@ export interface CalendarProps {
   onViewChange?: (view: ViewMode) => void;
   /** Called when navigation changes the date */
   onNavigate?: (date: CalendarDate) => void;
+  /** Render-time error fallback. Defaults to an inline alert. */
+  errorFallback?: ReactNode;
+  /** Called when an internal render error is caught by the error boundary. */
+  onError?: (error: Error, info: ErrorInfo) => void;
   /** Additional class names */
   className?: string;
 }
 
-export function Calendar({
-  view: controlledView,
-  defaultView = "month",
-  value,
-  defaultValue,
-  events = [],
-  locale = "en-US",
-  weekStartsOn = "sunday",
-  onEventClick,
-  onDateClick,
-  onViewChange,
-  onNavigate,
-  className,
-}: CalendarProps) {
+export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calendar(
+  {
+    view: controlledView,
+    defaultView = "month",
+    value,
+    defaultValue,
+    events = [],
+    locale = "en-US",
+    weekStartsOn = "sunday",
+    onEventClick,
+    onDateClick,
+    onViewChange,
+    onNavigate,
+    errorFallback,
+    onError,
+    className,
+  },
+  ref
+) {
   const nav = useCalendarNav({
     defaultValue: defaultValue ?? today(getLocalTimeZone()),
     value,
@@ -85,7 +103,7 @@ export function Calendar({
 
       const rect =
         anchorRect ??
-        (document.activeElement instanceof HTMLElement
+        (typeof document !== "undefined" && document.activeElement instanceof HTMLElement
           ? document.activeElement.getBoundingClientRect()
           : null);
       if (rect) {
@@ -128,17 +146,19 @@ export function Calendar({
 
   return (
     <CalendarContext.Provider value={contextValue}>
-      <div className={`relative bg-background text-foreground ${className ?? ""}`}>
-        <Header onNext={nav.goToNext} onPrev={nav.goToPrev} onToday={nav.goToToday} />
+      <div ref={ref} className={`relative bg-background text-foreground ${className ?? ""}`}>
+        <ErrorBoundary fallback={errorFallback} onError={onError}>
+          <Header onNext={nav.goToNext} onPrev={nav.goToPrev} onToday={nav.goToToday} />
 
-        <div className="px-4 pb-4">
-          {nav.view === "month" && <MonthView />}
-          {nav.view === "week" && <WeekView />}
-          {nav.view === "day" && <DayView />}
-        </div>
+          <div className="px-4 pb-4">
+            {nav.view === "month" && <MonthView />}
+            {nav.view === "week" && <WeekView />}
+            {nav.view === "day" && <DayView />}
+          </div>
 
-        <EventPopover event={popoverEvent} anchorRect={popoverAnchor} onClose={closePopover} />
+          <EventPopover event={popoverEvent} anchorRect={popoverAnchor} onClose={closePopover} />
+        </ErrorBoundary>
       </div>
     </CalendarContext.Provider>
   );
-}
+});

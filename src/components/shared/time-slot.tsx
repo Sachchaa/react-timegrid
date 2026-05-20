@@ -19,12 +19,10 @@ export function TimeSlot({ date, hour, minute }: TimeSlotProps) {
   const isHourBoundary = minute === 30;
 
   return (
-    // TODO(a11y): add keyboard handler + focusability; tracked under P1 keyboard-nav follow-up.
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/interactive-supports-focus
-    <div
-      role="gridcell"
+    <button
+      type="button"
       aria-label={getTimeSlotAriaLabel(hour, locale, minute, 30)}
-      className={`h-10 border-b transition-colors hover:bg-accent/40 cursor-pointer ${
+      className={`block h-10 w-full border-b text-left transition-colors hover:bg-accent/40 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset ${
         isHourBoundary ? "border-border" : "border-border/40"
       }`}
       onClick={handleClick}

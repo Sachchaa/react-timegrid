@@ -86,7 +86,7 @@ export function TimeGrid({
         </div>
       )}
 
-      <div className="max-h-[800px] overflow-y-auto" role="grid" aria-label="Time grid">
+      <div className="max-h-[800px] overflow-y-auto" role="region" aria-label="Time grid">
         <div
           className="grid"
           style={{ gridTemplateColumns: `4.5rem repeat(${columns.length}, 1fr)` }}

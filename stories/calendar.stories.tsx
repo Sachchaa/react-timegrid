@@ -190,6 +190,67 @@ export const MidnightEvent: Story = {
   },
 };
 
+export const DarkTheme: Story = {
+  decorators: [
+    (Story) => (
+      <div className="dark bg-background p-4" style={{ colorScheme: "dark" }}>
+        <Story />
+      </div>
+    ),
+  ],
+  args: {
+    defaultView: "week",
+    defaultValue: new CalendarDate(2026, 4, 16),
+    events: sampleEvents,
+    locale: "en-US",
+    weekStartsOn: "sunday",
+  },
+};
+
+export const RightToLeft: Story = {
+  decorators: [
+    (Story) => (
+      <div dir="rtl">
+        <Story />
+      </div>
+    ),
+  ],
+  args: {
+    defaultView: "month",
+    defaultValue: new CalendarDate(2026, 4, 16),
+    events: sampleEvents,
+    locale: "ar-EG",
+    weekStartsOn: "sunday",
+  },
+};
+
+export const LongTitles: Story = {
+  args: {
+    defaultView: "week",
+    defaultValue: new CalendarDate(2026, 4, 16),
+    events: [
+      {
+        id: "long-1",
+        title:
+          "Quarterly business review with the entire product, design, and engineering leadership team",
+        start: new CalendarDateTime(2026, 4, 16, 10, 0),
+        end: new CalendarDateTime(2026, 4, 16, 12, 0),
+        color: "purple",
+      },
+      {
+        id: "long-2",
+        title: "All-day company offsite — strategic planning",
+        start: new CalendarDate(2026, 4, 17),
+        end: new CalendarDate(2026, 4, 17),
+        allDay: true,
+        color: "orange",
+      },
+    ],
+    locale: "en-US",
+    weekStartsOn: "sunday",
+  },
+};
+
 export const ManyEvents: Story = {
   args: {
     defaultView: "month",

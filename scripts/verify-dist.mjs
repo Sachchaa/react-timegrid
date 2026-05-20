@@ -54,7 +54,7 @@ for (const rel of referenced) {
 
 // Canonical type entry must re-export the public surface.
 checkFile("dist/index.d.ts", {
-  mustContain: ["Calendar", "CalendarProps", "useCalendarNav"],
+  mustContain: ["Calendar", "CalendarProps", "CalendarErrorBoundary", "useCalendarNav"],
 });
 
 // CSS bundle must ship.

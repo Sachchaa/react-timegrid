@@ -1,0 +1,44 @@
+name: Bug report
+description: Something isn't working
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Please include a minimal repro — a CodeSandbox / StackBlitz link is ideal.
+  - type: input
+    id: version
+    attributes:
+      label: react-timegrid version
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: react-version
+    attributes:
+      label: React version
+      placeholder: "18.3.1 / 19.0.0"
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: Node version, browser, OS
+      placeholder: "Node 20.11, Chrome 124, macOS 14"
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: What happened, what did you expect, and how can someone reproduce it?
+    validations:
+      required: true
+  - type: input
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: Link to a CodeSandbox, StackBlitz, or repo
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
