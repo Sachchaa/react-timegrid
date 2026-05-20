@@ -78,7 +78,7 @@ export function TimeGrid({
           {columns.map((col) => (
             <div
               key={`allday-${col.date.toString()}`}
-              className={`min-h-10 ${columns.length > 1 ? "border-r border-border last:border-r-0" : ""}`}
+              className={`min-h-10 min-w-0 overflow-hidden ${columns.length > 1 ? "border-r border-border last:border-r-0" : ""}`}
             >
               <AllDayRow events={col.allDayEvents} />
             </div>
