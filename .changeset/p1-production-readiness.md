@@ -1,5 +1,5 @@
 ---
-"react-timegrid": minor
+"@codesutra/react-timegrid": minor
 ---
 
 P1 production-readiness pass:
