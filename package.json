@@ -1,5 +1,5 @@
 {
-  "name": "react-timegrid",
+  "name": "@codesutra/react-timegrid",
   "version": "0.0.1-beta",
   "description": "A full-featured React calendar component with month, week, and day views",
   "type": "module",
