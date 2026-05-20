@@ -6,6 +6,9 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "import": {
@@ -29,8 +32,14 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "tsc --noEmit",
+    "lint:eslint": "eslint .",
+    "lint:eslint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify:dist": "node scripts/verify-dist.mjs",
+    "changeset": "changeset",
     "storybook:build": "storybook build",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build && pnpm run verify:dist"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
@@ -40,6 +49,9 @@
     "@internationalized/date": "^3.8.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.10",
+    "@eslint/js": "^9.15.0",
+    "@storybook/addon-docs": "^10.3.5",
     "@storybook/react": "^10.3.5",
     "@storybook/react-vite": "^10.3.5",
     "@tailwindcss/cli": "^4.1.0",
@@ -48,15 +60,21 @@
     "@testing-library/react": "^16.3.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
     "jsdom": "^26.1.0",
+    "prettier": "^3.4.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "storybook": "^10.3.5",
     "tailwindcss": "^4.1.0",
     "tsdown": "^0.12.0",
     "typescript": "^5.8.0",
-    "vitest": "^3.1.0",
-    "@storybook/addon-docs": "^10.3.5"
+    "typescript-eslint": "^8.16.0",
+    "vitest": "^3.1.0"
   },
   "keywords": [
     "react",
@@ -72,6 +90,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sachinkanishka/react-timegrid"
-  }
+    "url": "git+https://github.com/sachinkanishka/react-timegrid.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sachinkanishka/react-timegrid/issues"
+  },
+  "homepage": "https://github.com/sachinkanishka/react-timegrid#readme"
 }

@@ -74,7 +74,7 @@ export function Calendar({
       console.warn(
         `[react-timegrid] Duplicate event id(s) detected: ${[...duplicates]
           .map((id) => `"${id}"`)
-          .join(", ")}. Event ids must be unique.`,
+          .join(", ")}. Event ids must be unique.`
       );
     }
   }, [events]);
@@ -93,7 +93,7 @@ export function Calendar({
         setPopoverEvent(event);
       }
     },
-    [onEventClick],
+    [onEventClick]
   );
 
   const closePopover = useCallback(() => {
@@ -123,17 +123,13 @@ export function Calendar({
       weekStartsOn,
       handleEventClick,
       onDateClick,
-    ],
+    ]
   );
 
   return (
     <CalendarContext.Provider value={contextValue}>
       <div className={`relative bg-background text-foreground ${className ?? ""}`}>
-        <Header
-          onNext={nav.goToNext}
-          onPrev={nav.goToPrev}
-          onToday={nav.goToToday}
-        />
+        <Header onNext={nav.goToNext} onPrev={nav.goToPrev} onToday={nav.goToToday} />
 
         <div className="px-4 pb-4">
           {nav.view === "month" && <MonthView />}
@@ -141,11 +137,7 @@ export function Calendar({
           {nav.view === "day" && <DayView />}
         </div>
 
-        <EventPopover
-          event={popoverEvent}
-          anchorRect={popoverAnchor}
-          onClose={closePopover}
-        />
+        <EventPopover event={popoverEvent} anchorRect={popoverAnchor} onClose={closePopover} />
       </div>
     </CalendarContext.Provider>
   );

@@ -16,28 +16,27 @@ export function EventCard({ positioned }: EventCardProps) {
       e.stopPropagation();
       onEventClick?.(event, e.currentTarget.getBoundingClientRect());
     },
-    [onEventClick, event],
+    [onEventClick, event]
   );
 
   const safeTotalColumns = Math.max(totalColumns, 1);
   const widthPercent = 100 / safeTotalColumns;
   const leftPercent = column * widthPercent;
 
-  const timeLabel =
-    isTimedEvent(event)
-      ? new Intl.DateTimeFormat(locale, {
-          hour: "numeric",
-          minute: "2-digit",
-        }).format(
-          new Date(
-            event.start.year,
-            event.start.month - 1,
-            event.start.day,
-            event.start.hour,
-            event.start.minute,
-          ),
+  const timeLabel = isTimedEvent(event)
+    ? new Intl.DateTimeFormat(locale, {
+        hour: "numeric",
+        minute: "2-digit",
+      }).format(
+        new Date(
+          event.start.year,
+          event.start.month - 1,
+          event.start.day,
+          event.start.hour,
+          event.start.minute
         )
-      : "";
+      )
+    : "";
 
   return (
     <button
@@ -54,9 +53,7 @@ export function EventCard({ positioned }: EventCardProps) {
       aria-label={`${event.title}${timeLabel ? `, ${timeLabel}` : ""}`}
     >
       <span className="block truncate font-medium">{event.title}</span>
-      {timeLabel && height > 3 && (
-        <span className="block truncate opacity-75">{timeLabel}</span>
-      )}
+      {timeLabel && height > 3 && <span className="block truncate opacity-75">{timeLabel}</span>}
     </button>
   );
 }

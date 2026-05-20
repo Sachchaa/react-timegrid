@@ -14,13 +14,9 @@ export function DayView() {
   });
 
   const singleColumn: DayColumn[] = useMemo(() => {
-    const match = allColumns.find(
-      (col) => col.date.compare(currentDate) === 0,
-    );
+    const match = allColumns.find((col) => col.date.compare(currentDate) === 0);
     return match ? [match] : allColumns.length > 0 ? [allColumns[0]] : [];
   }, [allColumns, currentDate]);
 
-  return (
-    <TimeGrid columns={singleColumn} timeSlots={timeSlots} showDayHeaders />
-  );
+  return <TimeGrid columns={singleColumn} timeSlots={timeSlots} showDayHeaders />;
 }

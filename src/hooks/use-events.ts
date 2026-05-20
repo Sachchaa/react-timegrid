@@ -29,7 +29,7 @@ export function useEvents(options: UseEventsOptions): UseEventsReturn {
       timedEvents: getTimedEventsForDate(events, date),
       allDayEvents: getAllDayEventsForDate(events, date),
     }),
-    [events, date],
+    [events, date]
   );
 }
 

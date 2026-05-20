@@ -1,6 +1,11 @@
 import { useMemo } from "react";
 import { useCalendarContext } from "../context/calendar-context";
-import { formatMonthYear, formatDayHeader, getStartOfWeek, getEndOfWeek } from "../utils/date-helpers";
+import {
+  formatMonthYear,
+  formatDayHeader,
+  getStartOfWeek,
+  getEndOfWeek,
+} from "../utils/date-helpers";
 import type { ViewMode } from "../types";
 
 const VIEW_LABELS: Record<ViewMode, string> = {
@@ -18,8 +23,7 @@ interface HeaderProps {
 }
 
 export function Header({ onNext, onPrev, onToday }: HeaderProps) {
-  const { view, currentDate, locale, weekStartsOn, onViewChange } =
-    useCalendarContext();
+  const { view, currentDate, locale, weekStartsOn, onViewChange } = useCalendarContext();
 
   const title = useMemo(() => {
     switch (view) {
@@ -31,9 +35,7 @@ export function Header({ onNext, onPrev, onToday }: HeaderProps) {
         const startStr = new Intl.DateTimeFormat(locale, {
           month: "short",
           day: "numeric",
-        }).format(
-          new Date(weekStart.year, weekStart.month - 1, weekStart.day),
-        );
+        }).format(new Date(weekStart.year, weekStart.month - 1, weekStart.day));
         const endStr = new Intl.DateTimeFormat(locale, {
           month: "short",
           day: "numeric",
@@ -49,11 +51,7 @@ export function Header({ onNext, onPrev, onToday }: HeaderProps) {
   return (
     <div className="flex items-center justify-between px-4 py-3">
       <div className="flex items-center gap-3">
-        <h2
-          className="text-lg font-semibold text-foreground"
-          aria-live="polite"
-          aria-atomic="true"
-        >
+        <h2 className="text-lg font-semibold text-foreground" aria-live="polite" aria-atomic="true">
           {title}
         </h2>
       </div>
@@ -74,7 +72,13 @@ export function Header({ onNext, onPrev, onToday }: HeaderProps) {
             aria-label="Previous"
             className="rounded-l-md bg-background px-2.5 py-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </button>
@@ -84,7 +88,13 @@ export function Header({ onNext, onPrev, onToday }: HeaderProps) {
             aria-label="Next"
             className="rounded-r-md border-l border-input bg-background px-2.5 py-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
           </button>

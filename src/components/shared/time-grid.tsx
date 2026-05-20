@@ -34,12 +34,15 @@ export function TimeGrid({
   return (
     <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-card">
       {showDayHeaders && (
-        <div className="grid border-b border-border bg-muted" style={{ gridTemplateColumns: `4.5rem repeat(${columns.length}, 1fr)` }}>
+        <div
+          className="grid border-b border-border bg-muted"
+          style={{ gridTemplateColumns: `4.5rem repeat(${columns.length}, 1fr)` }}
+        >
           <div className="border-r border-border" />
           {columns.map((col) => {
             const isToday = isSameDay(col.date, todayDate);
             const dayName = new Intl.DateTimeFormat(displayLocale, { weekday: "short" }).format(
-              new Date(col.date.year, col.date.month - 1, col.date.day),
+              new Date(col.date.year, col.date.month - 1, col.date.day)
             );
             return (
               <div

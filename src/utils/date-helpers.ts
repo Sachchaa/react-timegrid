@@ -13,14 +13,7 @@ import {
 } from "@internationalized/date";
 import type { WeekStartDay } from "../types";
 
-export {
-  today,
-  getLocalTimeZone,
-  isSameDay,
-  isSameMonth,
-  startOfMonth,
-  endOfMonth,
-};
+export { today, getLocalTimeZone, isSameDay, isSameMonth, startOfMonth, endOfMonth };
 
 const LOCALE_MAP: Record<WeekStartDay, string> = {
   sunday: "en-US",
@@ -31,43 +24,29 @@ export function getWeekStartLocale(weekStartsOn: WeekStartDay): string {
   return LOCALE_MAP[weekStartsOn];
 }
 
-export function getStartOfWeek(
-  date: CalendarDate,
-  weekStartsOn: WeekStartDay,
-): CalendarDate {
+export function getStartOfWeek(date: CalendarDate, weekStartsOn: WeekStartDay): CalendarDate {
   const locale = getWeekStartLocale(weekStartsOn);
   return startOfWeek(date, locale);
 }
 
-export function getEndOfWeek(
-  date: CalendarDate,
-  weekStartsOn: WeekStartDay,
-): CalendarDate {
+export function getEndOfWeek(date: CalendarDate, weekStartsOn: WeekStartDay): CalendarDate {
   const locale = getWeekStartLocale(weekStartsOn);
   return endOfWeek(date, locale);
 }
 
-export function getWeekDays(
-  weekStartsOn: WeekStartDay,
-  locale: string,
-): string[] {
+export function getWeekDays(weekStartsOn: WeekStartDay, locale: string): string[] {
   const base = today(getLocalTimeZone());
   const start = getStartOfWeek(base, weekStartsOn);
   const formatter = new Intl.DateTimeFormat(locale, { weekday: "short" });
   const days: string[] = [];
   for (let i = 0; i < 7; i++) {
     const d = start.add({ days: i });
-    days.push(
-      formatter.format(new Date(d.year, d.month - 1, d.day)),
-    );
+    days.push(formatter.format(new Date(d.year, d.month - 1, d.day)));
   }
   return days;
 }
 
-export function getDaysInMonthGrid(
-  date: CalendarDate,
-  weekStartsOn: WeekStartDay,
-): CalendarDate[] {
+export function getDaysInMonthGrid(date: CalendarDate, weekStartsOn: WeekStartDay): CalendarDate[] {
   const monthStart = startOfMonth(date);
   const monthEnd = endOfMonth(date);
   const gridStart = getStartOfWeek(monthStart, weekStartsOn);
@@ -82,10 +61,7 @@ export function getDaysInMonthGrid(
   return days;
 }
 
-export function getWeekDates(
-  date: CalendarDate,
-  weekStartsOn: WeekStartDay,
-): CalendarDate[] {
+export function getWeekDates(date: CalendarDate, weekStartsOn: WeekStartDay): CalendarDate[] {
   const start = getStartOfWeek(date, weekStartsOn);
   const dates: CalendarDate[] = [];
   for (let i = 0; i < 7; i++) {
@@ -94,11 +70,7 @@ export function getWeekDates(
   return dates;
 }
 
-export function isDateInRange(
-  date: CalendarDate,
-  start: CalendarDate,
-  end: CalendarDate,
-): boolean {
+export function isDateInRange(date: CalendarDate, start: CalendarDate, end: CalendarDate): boolean {
   return date.compare(start) >= 0 && date.compare(end) <= 0;
 }
 
@@ -106,10 +78,7 @@ export function getHourFromDateTime(dt: CalendarDateTime): number {
   return dt.hour + dt.minute / 60;
 }
 
-export function getDayOfWeekIndex(
-  date: CalendarDate,
-  weekStartsOn: WeekStartDay,
-): number {
+export function getDayOfWeekIndex(date: CalendarDate, weekStartsOn: WeekStartDay): number {
   const locale = getWeekStartLocale(weekStartsOn);
   return getDayOfWeek(date, locale);
 }
