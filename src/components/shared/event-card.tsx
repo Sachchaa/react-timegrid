@@ -38,6 +38,9 @@ export function EventCard({ positioned }: EventCardProps) {
       )
     : "";
 
+  const displayTitle = event.title || "Untitled event";
+  const ariaLabel = `${displayTitle}${timeLabel ? `, ${timeLabel}` : ""}`;
+
   return (
     <button
       type="button"
@@ -50,9 +53,9 @@ export function EventCard({ positioned }: EventCardProps) {
         zIndex: 10 + column,
       }}
       onClick={handleClick}
-      aria-label={`${event.title}${timeLabel ? `, ${timeLabel}` : ""}`}
+      aria-label={ariaLabel}
     >
-      <span className="block truncate font-medium">{event.title}</span>
+      <span className="block truncate font-medium">{displayTitle}</span>
       {timeLabel && height > 3 && <span className="block truncate opacity-75">{timeLabel}</span>}
     </button>
   );

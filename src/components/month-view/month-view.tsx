@@ -56,12 +56,11 @@ export function MonthView() {
   );
 
   return (
-    // TODO(a11y): make grid focusable; tracked under P1 keyboard-nav follow-up.
-    // eslint-disable-next-line jsx-a11y/interactive-supports-focus
     <div
       role="grid"
       aria-label="Calendar"
-      className="overflow-hidden rounded-lg border border-border bg-card"
+      tabIndex={-1}
+      className="overflow-hidden rounded-lg border border-border bg-card focus:outline-none"
       onKeyDown={handleKeyDown}
     >
       <div role="row" className="grid grid-cols-7 border-b border-border bg-muted">

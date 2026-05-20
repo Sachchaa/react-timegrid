@@ -70,7 +70,11 @@ function App() {
 | `onDateClick` | `(date: CalendarDate) => void` | — | Date cell click handler |
 | `onViewChange` | `(view: ViewMode) => void` | — | View change handler |
 | `onNavigate` | `(date: CalendarDate) => void` | — | Navigation handler |
+| `errorFallback` | `ReactNode` | inline alert | Fallback rendered when an internal error is caught |
+| `onError` | `(error, info) => void` | — | Called when the internal error boundary catches an error |
 | `className` | `string` | — | Additional CSS class |
+
+`Calendar` forwards its ref to the root `<div>`, so you can use `useRef<HTMLDivElement>()` to measure or focus it.
 
 ## Event Types
 
@@ -99,14 +103,51 @@ function App() {
 }
 ```
 
+## Styling
+
+The library ships a precompiled stylesheet at `react-timegrid/styles.css`. It is self-contained — you do **not** need to install or configure Tailwind in your application to use it:
+
+```ts
+import "react-timegrid/styles.css";
+```
+
+The theme is driven by CSS custom properties (`--background`, `--foreground`, `--primary`, `--border`, `--accent`, `--muted`, `--popover`, `--ring`, `--destructive`, and the corresponding `*-foreground` variants). Override them on `:root` or a parent element to retheme — including dark mode via `prefers-color-scheme` or a `.dark` class on a parent.
+
+If you already use Tailwind v4, you can instead import `react-timegrid/src/styles.css` as a source file and let your own pipeline tree-shake the classes.
+
+## Accessibility
+
+- The month view is a WAI-ARIA grid: arrow keys move between cells, `Home` / `End` jump to the start / end of a week, and `Enter` / `Space` activate a date cell.
+- Week and day views expose the time grid as a labelled `region`. Each time slot is a real `<button>` with an `aria-label` describing its start and end time, so it is reachable with `Tab` and activates with `Enter` / `Space`.
+- Events render as buttons with composed `aria-label`s (title + time range, with an `"Untitled event"` fallback if no title is provided).
+- The event details popover is a `dialog` that closes on `Escape` or click outside.
+
+## Server-side rendering
+
+The component is safe to render on the server. `window` / `document` access is guarded, `useLayoutEffect` is swapped for `useEffect` when there is no DOM, and the initial render does not depend on viewport measurement. The popover positioning runs on the client only.
+
+## Error handling
+
+The calendar's internal subtree is wrapped in an error boundary. If a render error escapes (for example from a malformed event), it renders an inline `role="alert"` fallback instead of crashing the host application. Customise the fallback with the `errorFallback` prop, or hook into `onError` to report it.
+
+If you want to apply the same boundary to your own code, the class is exported:
+
+```tsx
+import { CalendarErrorBoundary } from "react-timegrid";
+
+<CalendarErrorBoundary onError={(err) => report(err)}>
+  <YourComponent />
+</CalendarErrorBoundary>;
+```
+
 ## Hooks
 
 The package also exports the underlying hooks for custom implementations:
 
-- `useCalendarNav` — Date navigation and view switching
-- `useMonthGrid` — Month grid calculation (weeks, days, events)
-- `useTimeGrid` — Time grid calculation for week/day views
-- `useEvents` — Event filtering by date
+- `useCalendarNav(options)` — Date navigation and view switching. Supports controlled (`value`, `view`) and uncontrolled (`defaultValue`, `defaultView`) modes. Returns `{ currentDate, view, goToNext, goToPrev, goToToday, goToDate, setView }`.
+- `useMonthGrid({ date, events, weekStartsOn })` — Returns `{ weeks }`, the 6-row grid of `MonthGridDay`s for the month containing `date`, with events filtered to each cell.
+- `useTimeGrid({ dates, events })` — Returns `{ columns, timeSlots }` for week/day views: 48 half-hour slots and one column per date with positioned timed events and all-day events.
+- `useEvents({ events, range })` — Returns the events whose date range intersects `range`.
 
 ## Development
 

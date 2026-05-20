@@ -62,13 +62,13 @@ describe("Calendar component", () => {
   it("switches to week view", () => {
     render(<Calendar defaultValue={new CalendarDate(2026, 4, 16)} events={events} />);
     fireEvent.click(screen.getByText("Week"));
-    expect(screen.getByRole("grid", { name: "Time grid" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Time grid" })).toBeInTheDocument();
   });
 
   it("switches to day view", () => {
     render(<Calendar defaultValue={new CalendarDate(2026, 4, 16)} events={events} />);
     fireEvent.click(screen.getByText("Day"));
-    expect(screen.getByRole("grid", { name: "Time grid" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Time grid" })).toBeInTheDocument();
   });
 
   it("calls onEventClick when event is clicked", () => {
@@ -105,7 +105,7 @@ describe("Calendar component", () => {
     );
     expect(screen.getByText("April 2026")).toBeInTheDocument();
     rerender(<Calendar value={new CalendarDate(2026, 4, 16)} view="day" events={events} />);
-    expect(screen.getByRole("grid", { name: "Time grid" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Time grid" })).toBeInTheDocument();
   });
 
   it("warns on duplicate event ids", () => {
