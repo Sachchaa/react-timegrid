@@ -87,6 +87,9 @@
     "tailwindcss"
   ],
   "packageManager": "pnpm@10.9.0",
+  "engines": {
+    "node": ">=20"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
