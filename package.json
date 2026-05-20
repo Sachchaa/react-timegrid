@@ -98,10 +98,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sachinkanishka/react-timegrid.git"
+    "url": "git+https://github.com/Sachchaa/react-timegrid.git"
   },
   "bugs": {
-    "url": "https://github.com/sachinkanishka/react-timegrid/issues"
+    "url": "https://github.com/Sachchaa/react-timegrid/issues"
   },
-  "homepage": "https://github.com/sachinkanishka/react-timegrid#readme"
+  "homepage": "https://github.com/Sachchaa/react-timegrid#readme"
 }
