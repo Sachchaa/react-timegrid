@@ -1,12 +1,6 @@
 import { useMemo } from "react";
 import type { CalendarDate } from "@internationalized/date";
-import type {
-  CalendarEvent,
-  PositionedEvent,
-  AllDayEvent,
-  TimeSlot,
-  WeekStartDay,
-} from "../types";
+import type { CalendarEvent, PositionedEvent, AllDayEvent, TimeSlot, WeekStartDay } from "../types";
 import { getWeekDates } from "../utils/date-helpers";
 import {
   getTimedEventsForDate,
@@ -38,14 +32,7 @@ export interface UseTimeGridReturn {
 }
 
 export function useTimeGrid(options: UseTimeGridOptions): UseTimeGridReturn {
-  const {
-    date,
-    events,
-    weekStartsOn,
-    startHour = 0,
-    endHour = 24,
-    locale,
-  } = options;
+  const { date, events, weekStartsOn, startHour = 0, endHour = 24, locale } = options;
 
   return useMemo(() => {
     const dates = getWeekDates(date, weekStartsOn);
@@ -53,11 +40,7 @@ export function useTimeGrid(options: UseTimeGridOptions): UseTimeGridReturn {
     const columns: DayColumn[] = dates.map((d) => {
       const timedEvents = getTimedEventsForDate(events, d);
       const allDayEvents = getAllDayEventsForDate(events, d);
-      const positionedEvents = layoutTimedEvents(
-        timedEvents,
-        startHour,
-        endHour,
-      );
+      const positionedEvents = layoutTimedEvents(timedEvents, startHour, endHour);
 
       return { date: d, positionedEvents, allDayEvents };
     });

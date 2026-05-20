@@ -1,9 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import {
-  type CalendarDate,
-  today,
-  getLocalTimeZone,
-} from "@internationalized/date";
+import { type CalendarDate, today, getLocalTimeZone } from "@internationalized/date";
 import type { ViewMode } from "../types";
 
 export interface UseCalendarNavOptions {
@@ -25,9 +21,7 @@ export interface UseCalendarNavReturn {
   setView: (view: ViewMode) => void;
 }
 
-export function useCalendarNav(
-  options: UseCalendarNavOptions = {},
-): UseCalendarNavReturn {
+export function useCalendarNav(options: UseCalendarNavOptions = {}): UseCalendarNavReturn {
   const {
     defaultValue,
     value: controlledValue,
@@ -38,7 +32,7 @@ export function useCalendarNav(
   } = options;
 
   const [internalDate, setInternalDate] = useState<CalendarDate>(
-    () => defaultValue ?? today(getLocalTimeZone()),
+    () => defaultValue ?? today(getLocalTimeZone())
   );
   const [internalView, setInternalView] = useState<ViewMode>(defaultView);
 
@@ -52,7 +46,7 @@ export function useCalendarNav(
       }
       onNavigate?.(date);
     },
-    [controlledValue, onNavigate],
+    [controlledValue, onNavigate]
   );
 
   const setView = useCallback(
@@ -62,7 +56,7 @@ export function useCalendarNav(
       }
       onViewChange?.(newView);
     },
-    [controlledView, onViewChange],
+    [controlledView, onViewChange]
   );
 
   const goToNext = useCallback(() => {
@@ -107,6 +101,6 @@ export function useCalendarNav(
       goToDate: navigate,
       setView,
     }),
-    [currentDate, view, goToNext, goToPrev, goToToday, navigate, setView],
+    [currentDate, view, goToNext, goToPrev, goToToday, navigate, setView]
   );
 }

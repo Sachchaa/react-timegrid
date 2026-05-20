@@ -16,9 +16,7 @@ interface EventPopoverProps {
 export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) {
   const { locale } = useCalendarContext();
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState<{ top: number; left: number } | null>(
-    null,
-  );
+  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
 
   useLayoutEffect(() => {
     if (!anchorRect || !event) {
@@ -35,16 +33,14 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
     let top = anchorRect.bottom + VIEWPORT_MARGIN;
     if (top + height + VIEWPORT_MARGIN > viewportHeight) {
       const flipped = anchorRect.top - height - VIEWPORT_MARGIN;
-      top = flipped >= VIEWPORT_MARGIN
-        ? flipped
-        : Math.max(VIEWPORT_MARGIN, viewportHeight - height - VIEWPORT_MARGIN);
+      top =
+        flipped >= VIEWPORT_MARGIN
+          ? flipped
+          : Math.max(VIEWPORT_MARGIN, viewportHeight - height - VIEWPORT_MARGIN);
     }
 
     let left = anchorRect.left + anchorRect.width / 2 - width / 2;
-    left = Math.max(
-      VIEWPORT_MARGIN,
-      Math.min(left, viewportWidth - width - VIEWPORT_MARGIN),
-    );
+    left = Math.max(VIEWPORT_MARGIN, Math.min(left, viewportWidth - width - VIEWPORT_MARGIN));
 
     setPosition({ top, left });
   }, [anchorRect, event]);
@@ -72,7 +68,13 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
 
   if (!event || !anchorRect) return null;
 
-  const formatTime = (dt: { year: number; month: number; day: number; hour: number; minute: number }) => {
+  const formatTime = (dt: {
+    year: number;
+    month: number;
+    day: number;
+    hour: number;
+    minute: number;
+  }) => {
     return new Intl.DateTimeFormat(locale, {
       hour: "numeric",
       minute: "2-digit",
@@ -107,7 +109,13 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
           className="rounded p-0.5 text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           aria-label="Close"
         >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
         </button>
@@ -124,9 +132,7 @@ export function EventPopover({ event, anchorRect, onClose }: EventPopoverProps) 
         ) : (
           <>
             <p>{formatDate(event.start)}</p>
-            {event.start.compare(event.end) !== 0 && (
-              <p>to {formatDate(event.end)}</p>
-            )}
+            {event.start.compare(event.end) !== 0 && <p>to {formatDate(event.end)}</p>}
             <p className="mt-1 font-medium text-foreground">All day</p>
           </>
         )}

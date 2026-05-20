@@ -9,7 +9,7 @@ describe("useMonthGrid", () => {
 
   it("generates weeks for the month", () => {
     const { result } = renderHook(() =>
-      useMonthGrid({ date: april2026, events: [], weekStartsOn: "sunday" }),
+      useMonthGrid({ date: april2026, events: [], weekStartsOn: "sunday" })
     );
     expect(result.current.weeks.length).toBeGreaterThanOrEqual(4);
     expect(result.current.weeks.length).toBeLessThanOrEqual(6);
@@ -17,7 +17,7 @@ describe("useMonthGrid", () => {
 
   it("each week has 7 days", () => {
     const { result } = renderHook(() =>
-      useMonthGrid({ date: april2026, events: [], weekStartsOn: "sunday" }),
+      useMonthGrid({ date: april2026, events: [], weekStartsOn: "sunday" })
     );
     for (const week of result.current.weeks) {
       expect(week.days).toHaveLength(7);
@@ -26,7 +26,7 @@ describe("useMonthGrid", () => {
 
   it("marks current month days correctly", () => {
     const { result } = renderHook(() =>
-      useMonthGrid({ date: april2026, events: [], weekStartsOn: "sunday" }),
+      useMonthGrid({ date: april2026, events: [], weekStartsOn: "sunday" })
     );
     const allDays = result.current.weeks.flatMap((w) => w.days);
     const aprilDays = allDays.filter((d) => d.isCurrentMonth);
@@ -44,7 +44,7 @@ describe("useMonthGrid", () => {
       },
     ];
     const { result } = renderHook(() =>
-      useMonthGrid({ date: april2026, events, weekStartsOn: "sunday" }),
+      useMonthGrid({ date: april2026, events, weekStartsOn: "sunday" })
     );
     const allDays = result.current.weeks.flatMap((w) => w.days);
     const april16 = allDays.find((d) => d.date.day === 16 && d.isCurrentMonth);
@@ -54,7 +54,7 @@ describe("useMonthGrid", () => {
 
   it("respects monday start", () => {
     const { result } = renderHook(() =>
-      useMonthGrid({ date: april2026, events: [], weekStartsOn: "monday" }),
+      useMonthGrid({ date: april2026, events: [], weekStartsOn: "monday" })
     );
     const firstDay = result.current.weeks[0].days[0].date;
     const jsDate = new Date(firstDay.year, firstDay.month - 1, firstDay.day);

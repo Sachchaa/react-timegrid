@@ -59,10 +59,7 @@ describe("getEventsForDate", () => {
 
 describe("getTimedEventsForDate", () => {
   it("filters to only timed events", () => {
-    const result = getTimedEventsForDate(
-      [timedEvent, allDayEvent],
-      new CalendarDate(2026, 4, 16),
-    );
+    const result = getTimedEventsForDate([timedEvent, allDayEvent], new CalendarDate(2026, 4, 16));
     expect(result).toHaveLength(1);
     expect(result[0].id).toBe("1");
   });
@@ -70,10 +67,7 @@ describe("getTimedEventsForDate", () => {
 
 describe("getAllDayEventsForDate", () => {
   it("filters to only all-day events", () => {
-    const result = getAllDayEventsForDate(
-      [timedEvent, allDayEvent],
-      new CalendarDate(2026, 4, 16),
-    );
+    const result = getAllDayEventsForDate([timedEvent, allDayEvent], new CalendarDate(2026, 4, 16));
     expect(result).toHaveLength(1);
     expect(result[0].id).toBe("2");
   });

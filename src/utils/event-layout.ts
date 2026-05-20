@@ -1,13 +1,5 @@
-import {
-  type CalendarDate,
-  toCalendarDate,
-} from "@internationalized/date";
-import type {
-  CalendarEvent,
-  AllDayEvent,
-  TimedEvent,
-  PositionedEvent,
-} from "../types";
+import { type CalendarDate, toCalendarDate } from "@internationalized/date";
+import type { CalendarEvent, AllDayEvent, TimedEvent, PositionedEvent } from "../types";
 import { isDateInRange, getHourFromDateTime } from "./date-helpers";
 
 export function isAllDayEvent(event: CalendarEvent): event is AllDayEvent {
@@ -23,10 +15,7 @@ export function isTimedEvent(event: CalendarEvent): event is TimedEvent {
  * both all-day and timed events (an all-day event with start=end spans one
  * day; a timed event ending at 23:00 on day N is returned for day N).
  */
-export function getEventsForDate(
-  events: CalendarEvent[],
-  date: CalendarDate,
-): CalendarEvent[] {
+export function getEventsForDate(events: CalendarEvent[], date: CalendarDate): CalendarEvent[] {
   return events.filter((event) => {
     if (isAllDayEvent(event)) {
       return isDateInRange(date, event.start, event.end);
@@ -37,17 +26,11 @@ export function getEventsForDate(
   });
 }
 
-export function getTimedEventsForDate(
-  events: CalendarEvent[],
-  date: CalendarDate,
-): TimedEvent[] {
+export function getTimedEventsForDate(events: CalendarEvent[], date: CalendarDate): TimedEvent[] {
   return getEventsForDate(events, date).filter(isTimedEvent);
 }
 
-export function getAllDayEventsForDate(
-  events: CalendarEvent[],
-  date: CalendarDate,
-): AllDayEvent[] {
+export function getAllDayEventsForDate(events: CalendarEvent[], date: CalendarDate): AllDayEvent[] {
   return getEventsForDate(events, date).filter(isAllDayEvent);
 }
 
@@ -58,7 +41,7 @@ export function getAllDayEventsForDate(
 export function layoutTimedEvents(
   events: TimedEvent[],
   startHour: number = 0,
-  endHour: number = 24,
+  endHour: number = 24
 ): PositionedEvent[] {
   if (events.length === 0) return [];
 
@@ -101,16 +84,12 @@ export function layoutTimedEvents(
       const rawStart = (getHourFromDateTime(event.start) - startHour) * 60;
       const rawEnd = (getHourFromDateTime(event.end) - startHour) * 60;
       const eventStartMinutes = Math.max(0, Math.min(rawStart, totalMinutes));
-      const eventEndMinutes = Math.max(
-        eventStartMinutes,
-        Math.min(rawEnd, totalMinutes),
-      );
+      const eventEndMinutes = Math.max(eventStartMinutes, Math.min(rawEnd, totalMinutes));
 
       positioned.push({
         event,
         top: (eventStartMinutes / totalMinutes) * 100,
-        height:
-          ((eventEndMinutes - eventStartMinutes) / totalMinutes) * 100,
+        height: ((eventEndMinutes - eventStartMinutes) / totalMinutes) * 100,
         column: colIdx,
         totalColumns,
       });

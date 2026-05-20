@@ -22,9 +22,7 @@ const events: CalendarEvent[] = [
 
 describe("useEvents", () => {
   it("partitions timed and all-day events for the date", () => {
-    const { result } = renderHook(() =>
-      useEvents({ events, date: new CalendarDate(2026, 4, 16) }),
-    );
+    const { result } = renderHook(() => useEvents({ events, date: new CalendarDate(2026, 4, 16) }));
     expect(result.current.allEvents).toHaveLength(2);
     expect(result.current.timedEvents).toHaveLength(1);
     expect(result.current.allDayEvents).toHaveLength(1);
@@ -33,9 +31,7 @@ describe("useEvents", () => {
   });
 
   it("returns empty arrays for a date with no events", () => {
-    const { result } = renderHook(() =>
-      useEvents({ events, date: new CalendarDate(2026, 5, 1) }),
-    );
+    const { result } = renderHook(() => useEvents({ events, date: new CalendarDate(2026, 5, 1) }));
     expect(result.current.allEvents).toHaveLength(0);
     expect(result.current.timedEvents).toHaveLength(0);
     expect(result.current.allDayEvents).toHaveLength(0);
@@ -45,7 +41,7 @@ describe("useEvents", () => {
     const date = new CalendarDate(2026, 4, 16);
     const { result, rerender } = renderHook(
       ({ d }: { d: CalendarDate }) => useEvents({ events, date: d }),
-      { initialProps: { d: date } },
+      { initialProps: { d: date } }
     );
     const first = result.current;
     rerender({ d: date });

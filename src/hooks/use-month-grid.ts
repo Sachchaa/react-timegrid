@@ -1,11 +1,7 @@
 import { useMemo } from "react";
 import { type CalendarDate, today, getLocalTimeZone } from "@internationalized/date";
 import type { CalendarEvent, MonthGridWeek, WeekStartDay } from "../types";
-import {
-  getDaysInMonthGrid,
-  isSameDay,
-  isSameMonth,
-} from "../utils/date-helpers";
+import { getDaysInMonthGrid, isSameDay, isSameMonth } from "../utils/date-helpers";
 import { getEventsForDate } from "../utils/event-layout";
 
 export interface UseMonthGridOptions {

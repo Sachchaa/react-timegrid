@@ -24,89 +24,49 @@ const events: CalendarEvent[] = [
 
 describe("Calendar component", () => {
   it("renders month view by default", () => {
-    render(
-      <Calendar
-        defaultValue={new CalendarDate(2026, 4, 16)}
-        events={events}
-      />,
-    );
+    render(<Calendar defaultValue={new CalendarDate(2026, 4, 16)} events={events} />);
     expect(screen.getByText("April 2026")).toBeInTheDocument();
   });
 
   it("renders header with navigation controls", () => {
-    render(
-      <Calendar
-        defaultValue={new CalendarDate(2026, 4, 16)}
-        events={events}
-      />,
-    );
+    render(<Calendar defaultValue={new CalendarDate(2026, 4, 16)} events={events} />);
     expect(screen.getByText("Today")).toBeInTheDocument();
     expect(screen.getByLabelText("Previous")).toBeInTheDocument();
     expect(screen.getByLabelText("Next")).toBeInTheDocument();
   });
 
   it("renders view switcher tabs", () => {
-    render(
-      <Calendar
-        defaultValue={new CalendarDate(2026, 4, 16)}
-        events={events}
-      />,
-    );
+    render(<Calendar defaultValue={new CalendarDate(2026, 4, 16)} events={events} />);
     expect(screen.getByText("Month")).toBeInTheDocument();
     expect(screen.getByText("Week")).toBeInTheDocument();
     expect(screen.getByText("Day")).toBeInTheDocument();
   });
 
   it("shows events in month view", () => {
-    render(
-      <Calendar
-        defaultValue={new CalendarDate(2026, 4, 16)}
-        events={events}
-      />,
-    );
+    render(<Calendar defaultValue={new CalendarDate(2026, 4, 16)} events={events} />);
     expect(screen.getByText("Team standup")).toBeInTheDocument();
   });
 
   it("navigates to next month", () => {
-    render(
-      <Calendar
-        defaultValue={new CalendarDate(2026, 4, 16)}
-        events={events}
-      />,
-    );
+    render(<Calendar defaultValue={new CalendarDate(2026, 4, 16)} events={events} />);
     fireEvent.click(screen.getByLabelText("Next"));
     expect(screen.getByText("May 2026")).toBeInTheDocument();
   });
 
   it("navigates to previous month", () => {
-    render(
-      <Calendar
-        defaultValue={new CalendarDate(2026, 4, 16)}
-        events={events}
-      />,
-    );
+    render(<Calendar defaultValue={new CalendarDate(2026, 4, 16)} events={events} />);
     fireEvent.click(screen.getByLabelText("Previous"));
     expect(screen.getByText("March 2026")).toBeInTheDocument();
   });
 
   it("switches to week view", () => {
-    render(
-      <Calendar
-        defaultValue={new CalendarDate(2026, 4, 16)}
-        events={events}
-      />,
-    );
+    render(<Calendar defaultValue={new CalendarDate(2026, 4, 16)} events={events} />);
     fireEvent.click(screen.getByText("Week"));
     expect(screen.getByRole("grid", { name: "Time grid" })).toBeInTheDocument();
   });
 
   it("switches to day view", () => {
-    render(
-      <Calendar
-        defaultValue={new CalendarDate(2026, 4, 16)}
-        events={events}
-      />,
-    );
+    render(<Calendar defaultValue={new CalendarDate(2026, 4, 16)} events={events} />);
     fireEvent.click(screen.getByText("Day"));
     expect(screen.getByRole("grid", { name: "Time grid" })).toBeInTheDocument();
   });
@@ -118,11 +78,11 @@ describe("Calendar component", () => {
         defaultValue={new CalendarDate(2026, 4, 16)}
         events={events}
         onEventClick={onEventClick}
-      />,
+      />
     );
     fireEvent.click(screen.getByText("Team standup"));
     expect(onEventClick).toHaveBeenCalledWith(
-      expect.objectContaining({ id: "1", title: "Team standup" }),
+      expect.objectContaining({ id: "1", title: "Team standup" })
     );
   });
 
@@ -133,7 +93,7 @@ describe("Calendar component", () => {
         defaultValue={new CalendarDate(2026, 4, 16)}
         events={events}
         onViewChange={onViewChange}
-      />,
+      />
     );
     fireEvent.click(screen.getByText("Week"));
     expect(onViewChange).toHaveBeenCalledWith("week");
@@ -141,20 +101,10 @@ describe("Calendar component", () => {
 
   it("respects controlled view prop", () => {
     const { rerender } = render(
-      <Calendar
-        value={new CalendarDate(2026, 4, 16)}
-        view="month"
-        events={events}
-      />,
+      <Calendar value={new CalendarDate(2026, 4, 16)} view="month" events={events} />
     );
     expect(screen.getByText("April 2026")).toBeInTheDocument();
-    rerender(
-      <Calendar
-        value={new CalendarDate(2026, 4, 16)}
-        view="day"
-        events={events}
-      />,
-    );
+    rerender(<Calendar value={new CalendarDate(2026, 4, 16)} view="day" events={events} />);
     expect(screen.getByRole("grid", { name: "Time grid" })).toBeInTheDocument();
   });
 
@@ -177,11 +127,9 @@ describe("Calendar component", () => {
             end: new CalendarDateTime(2026, 4, 16, 12, 0),
           },
         ]}
-      />,
+      />
     );
-    expect(warn).toHaveBeenCalledWith(
-      expect.stringContaining('"dup"'),
-    );
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('"dup"'));
     warn.mockRestore();
   });
 });

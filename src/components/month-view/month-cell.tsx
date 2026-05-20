@@ -6,8 +6,7 @@ import { isAllDayEvent } from "../../utils/event-layout";
 
 const MAX_VISIBLE_EVENTS = 3;
 
-const EVENT_CLASS =
-  "bg-accent text-accent-foreground border-l-primary";
+const EVENT_CLASS = "bg-accent text-accent-foreground border-l-primary";
 
 interface MonthCellProps {
   day: MonthGridDay;
@@ -34,7 +33,7 @@ export function MonthCell({
       e.stopPropagation();
       onEventClick?.(event, e.currentTarget.getBoundingClientRect());
     },
-    [onEventClick],
+    [onEventClick]
   );
 
   const handleKeyDown = useCallback(
@@ -44,7 +43,7 @@ export function MonthCell({
         handleDateClick();
       }
     },
-    [handleDateClick],
+    [handleDateClick]
   );
 
   const visibleEvents = day.events.slice(0, MAX_VISIBLE_EVENTS);
@@ -102,8 +101,8 @@ export function MonthCell({
                     event.start.month - 1,
                     event.start.day,
                     event.start.hour,
-                    event.start.minute,
-                  ),
+                    event.start.minute
+                  )
                 )}
               </span>
             )}
