@@ -207,23 +207,6 @@ export const DarkTheme: Story = {
   },
 };
 
-export const RightToLeft: Story = {
-  decorators: [
-    (Story) => (
-      <div dir="rtl">
-        <Story />
-      </div>
-    ),
-  ],
-  args: {
-    defaultView: "month",
-    defaultValue: new CalendarDate(2026, 4, 16),
-    events: sampleEvents,
-    locale: "ar-EG",
-    weekStartsOn: "sunday",
-  },
-};
-
 export const LongTitles: Story = {
   args: {
     defaultView: "week",
