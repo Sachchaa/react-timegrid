@@ -234,6 +234,60 @@ export const LongTitles: Story = {
   },
 };
 
+export const ColoredEvents: Story = {
+  args: {
+    defaultView: "week",
+    defaultValue: new CalendarDate(2026, 4, 16),
+    events: [
+      {
+        id: "color-1",
+        title: "Named color (tomato)",
+        start: new CalendarDateTime(2026, 4, 16, 9, 0),
+        end: new CalendarDateTime(2026, 4, 16, 10, 0),
+        color: "tomato",
+      },
+      {
+        id: "color-2",
+        title: "Hex color (#3b82f6)",
+        start: new CalendarDateTime(2026, 4, 16, 10, 30),
+        end: new CalendarDateTime(2026, 4, 16, 11, 30),
+        color: "#3b82f6",
+      },
+      {
+        id: "color-3",
+        title: "rgb() color",
+        start: new CalendarDateTime(2026, 4, 16, 12, 0),
+        end: new CalendarDateTime(2026, 4, 16, 13, 0),
+        color: "rgb(16, 185, 129)",
+      },
+      {
+        id: "color-4",
+        title: "hsl() color",
+        start: new CalendarDateTime(2026, 4, 16, 14, 0),
+        end: new CalendarDateTime(2026, 4, 16, 15, 0),
+        color: "hsl(280, 70%, 55%)",
+      },
+      {
+        id: "color-5",
+        title: "Default (no color)",
+        start: new CalendarDateTime(2026, 4, 16, 15, 30),
+        end: new CalendarDateTime(2026, 4, 16, 16, 30),
+      },
+      {
+        id: "color-6",
+        title: "All-day colored event",
+        start: new CalendarDate(2026, 4, 16),
+        end: new CalendarDate(2026, 4, 16),
+        allDay: true,
+        color: "#f59e0b",
+      },
+    ],
+    locale: "en-US",
+    weekStartsOn: "sunday",
+    onEventClick: (event) => console.log("Event clicked:", event),
+  },
+};
+
 export const ManyEvents: Story = {
   args: {
     defaultView: "month",

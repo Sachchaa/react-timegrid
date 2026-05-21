@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import type { PositionedEvent } from "../../types";
 import { useCalendarContext } from "../../context/calendar-context";
 import { isTimedEvent } from "../../utils/event-layout";
+import { getEventColorStyle } from "../../utils/event-color";
 
 interface EventCardProps {
   positioned: PositionedEvent;
@@ -51,6 +52,7 @@ export function EventCard({ positioned }: EventCardProps) {
         left: `${leftPercent}%`,
         width: `calc(${widthPercent}% - 4px)`,
         zIndex: 10 + column,
+        ...getEventColorStyle(event),
       }}
       onClick={handleClick}
       aria-label={ariaLabel}
