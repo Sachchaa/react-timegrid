@@ -25,6 +25,10 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "tsdown && tsc -p tsconfig.build.json && pnpm run build:css",
     "build:css": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify",
