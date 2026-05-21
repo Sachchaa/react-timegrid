@@ -1,5 +1,6 @@
 import type { AllDayEvent } from "../../types";
 import { useCalendarContext } from "../../context/calendar-context";
+import { getEventColorStyle } from "../../utils/event-color";
 
 interface AllDayRowProps {
   events: AllDayEvent[];
@@ -17,6 +18,7 @@ export function AllDayRow({ events }: AllDayRowProps) {
           key={event.id}
           type="button"
           className="flex h-8 w-full items-center truncate rounded border-l-2 border-l-primary bg-accent px-2 text-left text-xs font-medium text-accent-foreground transition-opacity hover:opacity-80"
+          style={getEventColorStyle(event)}
           onClick={(e) => onEventClick?.(event, e.currentTarget.getBoundingClientRect())}
           aria-label={event.title}
         >

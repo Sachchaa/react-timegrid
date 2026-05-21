@@ -3,6 +3,7 @@ import type { MonthGridDay, CalendarEvent } from "../../types";
 import { useCalendarContext } from "../../context/calendar-context";
 import { getGridCellAriaLabel } from "../../utils/aria";
 import { isAllDayEvent } from "../../utils/event-layout";
+import { getEventColorStyle } from "../../utils/event-color";
 
 const MAX_VISIBLE_EVENTS = 3;
 
@@ -87,6 +88,7 @@ export function MonthCell({
               transition-opacity hover:opacity-80
               ${EVENT_CLASS}
             `}
+            style={getEventColorStyle(event)}
             onClick={(e) => handleEventClick(e, event)}
             aria-label={event.title}
           >
