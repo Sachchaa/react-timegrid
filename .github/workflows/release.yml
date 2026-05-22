@@ -22,12 +22,14 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: pnpm/action-setup@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
+
+      - name: Ensure npm 11.5.1+ for OIDC trusted publishing
+        run: npm install -g npm@latest
+
+      - uses: pnpm/action-setup@v4
 
       - run: pnpm install --frozen-lockfile
 
@@ -41,5 +43,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm exec semantic-release
 
+      - name: Debug OIDC + npm environment
+        run: |
+          echo "node: $(node --version)"
+          echo "npm:  $(npm --version)"
+          echo "OIDC request URL present: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}"
+          echo "OIDC request token present: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+yes}"
+          echo "--- npm config (auth redacted by npm) ---"
+          npm config list || true
+
       - name: Publish to npm (OIDC trusted publishing)
-        run: npx --yes npm@latest publish --access public --ignore-scripts
+        run: npm publish --access public --ignore-scripts
