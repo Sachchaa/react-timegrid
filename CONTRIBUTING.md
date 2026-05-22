@@ -39,15 +39,16 @@ pnpm run verify:dist     # asserts dist matches package.json exports
 - SSR safety is covered by `tests/ssr.test.tsx` — anything new that touches `window` / `document` must stay guarded.
 - Coverage thresholds (80% lines / statements, 75% branches / functions) are enforced in CI.
 
-## Changesets
+## Commits & releases
 
-For any user-facing change, run:
+Releases are fully automated with [semantic-release](https://semantic-release.gitbook.io/) and driven by your commit messages, so use [Conventional Commits](https://www.conventionalcommits.org/):
 
-```sh
-pnpm changeset
-```
+- `fix: ...` &rarr; patch release
+- `feat: ...` &rarr; minor release
+- `feat!: ...` or a `BREAKING CHANGE:` footer &rarr; major release
+- `chore:` / `docs:` / `refactor:` / `test:` / etc. &rarr; no release
 
-Pick a semver bump and write a one-line summary. Commit the generated file under `.changeset/` along with your code. Releases are cut by merging the auto-generated "Version Packages" PR on `main`.
+When a PR merges to `main`, the release workflow computes the next version from the commits, updates `CHANGELOG.md`, publishes to npm, and creates the GitHub release. No manual version bumps or changeset files are needed.
 
 ## Reporting issues
 
