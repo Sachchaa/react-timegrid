@@ -26,8 +26,12 @@ jobs:
         with:
           node-version: 22
 
+      # Node 22.22.2's toolcache ships a broken npm 10.9.7 whose arborist can't
+      # load (missing promise-retry), so a `npm install -g npm@latest` self-upgrade
+      # aborts with MODULE_NOT_FOUND. Route the global install through a healthy
+      # npm fetched by corepack instead. See nodejs/node#62425, npm/cli#9151.
       - name: Ensure npm 11.5.1+ for OIDC trusted publishing
-        run: npm install -g npm@latest
+        run: corepack npm@latest install -g npm@latest
 
       - uses: pnpm/action-setup@v4
 
