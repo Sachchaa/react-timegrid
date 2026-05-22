@@ -9,7 +9,7 @@
         "changelogTitle": "# Changelog\n\nAll notable changes to this project are documented in this file. New entries are generated automatically by [semantic-release](https://semantic-release.gitbook.io/) from [Conventional Commits](https://www.conventionalcommits.org/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)."
       }
     ],
-    "@semantic-release/npm",
+    ["@semantic-release/npm", { "npmPublish": false }],
     "@semantic-release/github",
     [
       "@semantic-release/git",
