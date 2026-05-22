@@ -27,6 +27,8 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -34,8 +36,6 @@ jobs:
 
       - name: Ensure npm 11.5.1+ for OIDC trusted publishing
         run: corepack npm@latest install -g npm@latest
-
-      - uses: pnpm/action-setup@v4
 
       - run: pnpm install --frozen-lockfile
 
