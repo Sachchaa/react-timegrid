@@ -56,45 +56,65 @@ export function layoutTimedEvents(
     return bEnd - aEnd;
   });
 
-  const columns: { end: number; event: TimedEvent }[][] = [];
+  const positioned: PositionedEvent[] = [];
 
-  for (const event of sorted) {
-    const eventStart = getHourFromDateTime(event.start);
-    let placed = false;
+  // Group events into clusters of transitively-overlapping events, then pack
+  // columns within each cluster. Column count is per cluster (not per day) so a
+  // single overlapping pair doesn't shrink unrelated events elsewhere in the day.
+  let cluster: TimedEvent[] = [];
+  let clusterEnd = -Infinity;
 
-    for (const column of columns) {
-      const lastInColumn = column[column.length - 1];
-      if (lastInColumn.end <= eventStart) {
-        column.push({ end: getHourFromDateTime(event.end), event });
-        placed = true;
-        break;
+  const flushCluster = () => {
+    if (cluster.length === 0) return;
+
+    const columns: { end: number; event: TimedEvent }[][] = [];
+    for (const event of cluster) {
+      const eventStart = getHourFromDateTime(event.start);
+      let placed = false;
+      for (const column of columns) {
+        const lastInColumn = column[column.length - 1];
+        if (lastInColumn.end <= eventStart) {
+          column.push({ end: getHourFromDateTime(event.end), event });
+          placed = true;
+          break;
+        }
+      }
+      if (!placed) {
+        columns.push([{ end: getHourFromDateTime(event.end), event }]);
       }
     }
 
-    if (!placed) {
-      columns.push([{ end: getHourFromDateTime(event.end), event }]);
+    const totalColumns = Math.max(columns.length, 1);
+    for (let colIdx = 0; colIdx < columns.length; colIdx++) {
+      for (const { event } of columns[colIdx]) {
+        const rawStart = (getHourFromDateTime(event.start) - startHour) * 60;
+        const rawEnd = (getHourFromDateTime(event.end) - startHour) * 60;
+        const eventStartMinutes = Math.max(0, Math.min(rawStart, totalMinutes));
+        const eventEndMinutes = Math.max(eventStartMinutes, Math.min(rawEnd, totalMinutes));
+
+        positioned.push({
+          event,
+          top: (eventStartMinutes / totalMinutes) * 100,
+          height: ((eventEndMinutes - eventStartMinutes) / totalMinutes) * 100,
+          column: colIdx,
+          totalColumns,
+        });
+      }
     }
-  }
 
-  const totalColumns = Math.max(columns.length, 1);
-  const positioned: PositionedEvent[] = [];
+    cluster = [];
+    clusterEnd = -Infinity;
+  };
 
-  for (let colIdx = 0; colIdx < columns.length; colIdx++) {
-    for (const { event } of columns[colIdx]) {
-      const rawStart = (getHourFromDateTime(event.start) - startHour) * 60;
-      const rawEnd = (getHourFromDateTime(event.end) - startHour) * 60;
-      const eventStartMinutes = Math.max(0, Math.min(rawStart, totalMinutes));
-      const eventEndMinutes = Math.max(eventStartMinutes, Math.min(rawEnd, totalMinutes));
-
-      positioned.push({
-        event,
-        top: (eventStartMinutes / totalMinutes) * 100,
-        height: ((eventEndMinutes - eventStartMinutes) / totalMinutes) * 100,
-        column: colIdx,
-        totalColumns,
-      });
+  for (const event of sorted) {
+    const eventStart = getHourFromDateTime(event.start);
+    if (cluster.length > 0 && eventStart >= clusterEnd) {
+      flushCluster();
     }
+    cluster.push(event);
+    clusterEnd = Math.max(clusterEnd, getHourFromDateTime(event.end));
   }
+  flushCluster();
 
   return positioned;
 }

@@ -116,6 +116,61 @@ describe("layoutTimedEvents", () => {
     expect(result[0].column).not.toBe(result[1].column);
   });
 
+  it("keeps non-overlapping events full width when other events overlap", () => {
+    const events: TimedEvent[] = [
+      {
+        id: "standalone",
+        title: "Standalone",
+        start: new CalendarDateTime(2026, 4, 16, 9, 0),
+        end: new CalendarDateTime(2026, 4, 16, 10, 0),
+      },
+      {
+        id: "overlap-a",
+        title: "Overlap A",
+        start: new CalendarDateTime(2026, 4, 16, 15, 0),
+        end: new CalendarDateTime(2026, 4, 16, 16, 30),
+      },
+      {
+        id: "overlap-b",
+        title: "Overlap B",
+        start: new CalendarDateTime(2026, 4, 16, 15, 30),
+        end: new CalendarDateTime(2026, 4, 16, 17, 0),
+      },
+    ];
+    const result = layoutTimedEvents(events);
+    const byId = (id: string) => result.find((p) => p.event.id === id)!;
+
+    expect(byId("standalone").totalColumns).toBe(1);
+    expect(byId("overlap-a").totalColumns).toBe(2);
+    expect(byId("overlap-b").totalColumns).toBe(2);
+    expect(byId("overlap-a").column).not.toBe(byId("overlap-b").column);
+  });
+
+  it("treats transitively-overlapping events as a single cluster", () => {
+    const events: TimedEvent[] = [
+      {
+        id: "a",
+        title: "A",
+        start: new CalendarDateTime(2026, 4, 16, 9, 0),
+        end: new CalendarDateTime(2026, 4, 16, 10, 0),
+      },
+      {
+        id: "b",
+        title: "B",
+        start: new CalendarDateTime(2026, 4, 16, 9, 30),
+        end: new CalendarDateTime(2026, 4, 16, 11, 0),
+      },
+      {
+        id: "c",
+        title: "C",
+        start: new CalendarDateTime(2026, 4, 16, 10, 30),
+        end: new CalendarDateTime(2026, 4, 16, 12, 0),
+      },
+    ];
+    const result = layoutTimedEvents(events);
+    expect(result.every((p) => p.totalColumns === 2)).toBe(true);
+  });
+
   it("returns empty for no events", () => {
     expect(layoutTimedEvents([])).toHaveLength(0);
   });
