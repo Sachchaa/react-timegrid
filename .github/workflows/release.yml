@@ -42,7 +42,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm exec semantic-release
 
-      - name: Publish to npm (OIDC)
+      - name: Publish to npm
         run: npm publish --access public --ignore-scripts
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: "true"
