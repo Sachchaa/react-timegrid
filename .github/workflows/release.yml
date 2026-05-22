@@ -50,10 +50,6 @@ jobs:
           echo "OIDC request token present: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+yes}"
           echo "--- npm config (auth redacted by npm) ---"
           npm config list || true
-        env:
-          NPM_CONFIG_USERCONFIG: /dev/null
 
       - name: Publish to npm (OIDC trusted publishing)
         run: npm publish --access public --ignore-scripts
-        env:
-          NPM_CONFIG_USERCONFIG: /dev/null
