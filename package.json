@@ -26,7 +26,8 @@
     "dist"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "tsdown && tsc -p tsconfig.build.json && pnpm run build:css",
