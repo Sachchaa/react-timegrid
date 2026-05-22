@@ -1,7 +1,5 @@
 # react-timegrid
 
-> **⚠️ Beta:** This package is in beta. The API may change before a stable `1.0.0` release, and some edges may still be rough. Please report issues you run into.
-
 A full-featured React calendar component with month, week, and day views. Built with `@internationalized/date` for timezone-aware, i18n-ready date handling, and styled with Tailwind CSS.
 
 ## Features
@@ -17,10 +15,8 @@ A full-featured React calendar component with month, week, and day views. Built 
 
 ## Installation
 
-This is a beta release, so install it from the `beta` dist-tag (or pin the exact `0.0.1-beta` version):
-
 ```bash
-pnpm add @codesutra/react-timegrid@beta
+pnpm add @codesutra/react-timegrid
 ```
 
 ## Quick Start
@@ -109,15 +105,15 @@ function App() {
 
 ## Styling
 
-The library ships a precompiled stylesheet at `react-timegrid/styles.css`. It is self-contained — you do **not** need to install or configure Tailwind in your application to use it:
+The library ships a precompiled stylesheet at `@codesutra/react-timegrid/styles.css`. It is self-contained — you do **not** need to install or configure Tailwind in your application to use it:
 
 ```ts
-import "react-timegrid/styles.css";
+import "@codesutra/react-timegrid/styles.css";
 ```
 
 The theme is driven by CSS custom properties (`--background`, `--foreground`, `--primary`, `--border`, `--accent`, `--muted`, `--popover`, `--ring`, `--destructive`, and the corresponding `*-foreground` variants). Override them on `:root` or a parent element to retheme — including dark mode via `prefers-color-scheme` or a `.dark` class on a parent.
 
-If you already use Tailwind v4, you can instead import `react-timegrid/src/styles.css` as a source file and let your own pipeline tree-shake the classes.
+If you already use Tailwind v4, you can instead import `@codesutra/react-timegrid/src/styles.css` as a source file and let your own pipeline tree-shake the classes.
 
 ## Accessibility
 
@@ -137,7 +133,7 @@ The calendar's internal subtree is wrapped in an error boundary. If a render err
 If you want to apply the same boundary to your own code, the class is exported:
 
 ```tsx
-import { CalendarErrorBoundary } from "react-timegrid";
+import { CalendarErrorBoundary } from "@codesutra/react-timegrid";
 
 <CalendarErrorBoundary onError={(err) => report(err)}>
   <YourComponent />
