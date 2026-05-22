@@ -26,7 +26,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -42,4 +42,4 @@ jobs:
         run: pnpm exec semantic-release
 
       - name: Publish to npm (OIDC trusted publishing)
-        run: npm publish --access public --ignore-scripts
+        run: npx --yes npm@latest publish --access public --ignore-scripts
