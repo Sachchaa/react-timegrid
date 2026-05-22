@@ -1,11 +1,14 @@
 name: Release
 
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -15,25 +18,22 @@ permissions:
 
 jobs:
   release:
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
           persist-credentials: false
+
+      - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      # Node 22.22.2's toolcache ships a broken npm 10.9.7 whose arborist can't
-      # load (missing promise-retry), so a `npm install -g npm@latest` self-upgrade
-      # aborts with MODULE_NOT_FOUND. Route the global install through a healthy
-      # npm fetched by corepack instead. See nodejs/node#62425, npm/cli#9151.
-      - name: Ensure npm 11.5.1+ for OIDC trusted publishing
-        run: corepack npm@latest install -g npm@latest
-
-      - uses: pnpm/action-setup@v4
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
 
       - run: pnpm install --frozen-lockfile
 
@@ -46,15 +46,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm exec semantic-release
-
-      - name: Debug OIDC + npm environment
-        run: |
-          echo "node: $(node --version)"
-          echo "npm:  $(npm --version)"
-          echo "OIDC request URL present: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}"
-          echo "OIDC request token present: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+yes}"
-          echo "--- npm config (auth redacted by npm) ---"
-          npm config list || true
-
-      - name: Publish to npm (OIDC trusted publishing)
-        run: npm publish --access public --ignore-scripts
