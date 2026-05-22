@@ -12,9 +12,9 @@
 - [ ] Manually exercised the affected view(s) in Storybook
 - [ ] Added / updated tests for new behaviour
 
-## Changeset
+## Release
 
-- [ ] Ran `pnpm changeset` and committed the markdown file (or this PR is internal / docs-only)
+- [ ] Commits follow [Conventional Commits](https://www.conventionalcommits.org/) (`fix:` / `feat:` / `feat!:`) so semantic-release can version correctly (or this PR is internal / docs-only)
 
 ## Notes for reviewers
 
