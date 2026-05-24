@@ -10,35 +10,40 @@ export function MonthView() {
   const weekDays = getWeekDays(weekStartsOn, locale);
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
 
+  const totalCells = weeks.length * 7;
+  // Months span 4–6 weeks, so a stored index can point past the end of a
+  // shorter month after navigation. Clamp it so exactly one cell always keeps
+  // tabIndex 0 and the grid never loses its keyboard tab stop.
+  const activeIndex = Math.min(focusedIndex, totalCells - 1);
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      const totalCells = weeks.length * 7;
-      let nextIndex = focusedIndex;
+      let nextIndex = activeIndex;
 
       switch (e.key) {
         case "ArrowRight":
           e.preventDefault();
-          nextIndex = Math.min(focusedIndex + 1, totalCells - 1);
+          nextIndex = Math.min(activeIndex + 1, totalCells - 1);
           break;
         case "ArrowLeft":
           e.preventDefault();
-          nextIndex = Math.max(focusedIndex - 1, 0);
+          nextIndex = Math.max(activeIndex - 1, 0);
           break;
         case "ArrowDown":
           e.preventDefault();
-          nextIndex = Math.min(focusedIndex + 7, totalCells - 1);
+          nextIndex = Math.min(activeIndex + 7, totalCells - 1);
           break;
         case "ArrowUp":
           e.preventDefault();
-          nextIndex = Math.max(focusedIndex - 7, 0);
+          nextIndex = Math.max(activeIndex - 7, 0);
           break;
         case "Home":
           e.preventDefault();
-          nextIndex = Math.floor(focusedIndex / 7) * 7;
+          nextIndex = Math.floor(activeIndex / 7) * 7;
           break;
         case "End":
           e.preventDefault();
-          nextIndex = Math.floor(focusedIndex / 7) * 7 + 6;
+          nextIndex = Math.floor(activeIndex / 7) * 7 + 6;
           break;
         default:
           return;
@@ -52,7 +57,7 @@ export function MonthView() {
       ) as HTMLElement | null;
       cell?.focus();
     },
-    [focusedIndex, weeks.length]
+    [activeIndex, totalCells]
   );
 
   return (
@@ -83,7 +88,7 @@ export function MonthView() {
               <MonthCell
                 key={day.date.toString()}
                 day={day}
-                tabIndex={cellIndex === focusedIndex ? 0 : -1}
+                tabIndex={cellIndex === activeIndex ? 0 : -1}
                 onFocus={() => setFocusedIndex(cellIndex)}
                 data-cell-index={`${weekIdx}-${dayIdx}`}
               />
