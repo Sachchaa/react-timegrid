@@ -1,0 +1,31 @@
+{
+  "name": "react-timegrid-video",
+  "version": "1.0.0",
+  "description": "Remotion promo video for @codesutra/react-timegrid",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "preview": "remotion studio",
+    "render": "remotion render Promo out/react-timegrid.mp4",
+    "still": "remotion still Promo out/still.png",
+    "upgrade": "remotion upgrade",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@internationalized/date": "^3.8.0",
+    "@remotion/bundler": "4.0.465",
+    "@remotion/cli": "4.0.465",
+    "@remotion/renderer": "4.0.465",
+    "@remotion/tailwind-v4": "4.0.465",
+    "@remotion/transitions": "4.0.465",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.465"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.0",
+    "tailwindcss": "4.3.0",
+    "typescript": "5.8.3"
+  }
+}
