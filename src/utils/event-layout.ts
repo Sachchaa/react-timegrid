@@ -34,68 +34,87 @@ export function getAllDayEventsForDate(events: CalendarEvent[], date: CalendarDa
   return getEventsForDate(events, date).filter(isAllDayEvent);
 }
 
+interface DaySegment {
+  event: TimedEvent;
+  start: number;
+  end: number;
+}
+
 /**
  * Column-packing algorithm for overlapping timed events.
  * Events that overlap in time are placed in parallel columns.
+ *
+ * Each event is clamped to `date`'s visible window before layout. A multi-day
+ * event extends to the window edge on days it fully spans, so an overnight or
+ * multi-day event renders as a block on every day it touches instead of
+ * collapsing to zero height on days other than its start.
  */
 export function layoutTimedEvents(
   events: TimedEvent[],
+  date: CalendarDate,
   startHour: number = 0,
   endHour: number = 24
 ): PositionedEvent[] {
-  if (events.length === 0) return [];
+  const windowHours = endHour - startHour;
+  if (events.length === 0 || windowHours <= 0) return [];
 
-  const totalMinutes = (endHour - startHour) * 60;
+  // Resolve each event to the slice of [startHour, endHour] it occupies on
+  // `date`: full window before/after for days it spans, the event's own time on
+  // its start/end day. Segments with no visible extent are dropped.
+  const segments: DaySegment[] = [];
+  for (const event of events) {
+    const startsBeforeToday = toCalendarDate(event.start).compare(date) < 0;
+    const endsAfterToday = toCalendarDate(event.end).compare(date) > 0;
+    const rawStart = startsBeforeToday ? startHour : getHourFromDateTime(event.start);
+    const rawEnd = endsAfterToday ? endHour : getHourFromDateTime(event.end);
+    const start = Math.max(startHour, Math.min(rawStart, endHour));
+    const end = Math.max(startHour, Math.min(rawEnd, endHour));
+    if (end > start) {
+      segments.push({ event, start, end });
+    }
+  }
 
-  const sorted = [...events].sort((a, b) => {
-    const aStart = getHourFromDateTime(a.start);
-    const bStart = getHourFromDateTime(b.start);
-    if (aStart !== bStart) return aStart - bStart;
-    const aEnd = getHourFromDateTime(a.end);
-    const bEnd = getHourFromDateTime(b.end);
-    return bEnd - aEnd;
+  if (segments.length === 0) return [];
+
+  segments.sort((a, b) => {
+    if (a.start !== b.start) return a.start - b.start;
+    return b.end - a.end;
   });
 
   const positioned: PositionedEvent[] = [];
 
-  // Group events into clusters of transitively-overlapping events, then pack
+  // Group segments into clusters of transitively-overlapping events, then pack
   // columns within each cluster. Column count is per cluster (not per day) so a
   // single overlapping pair doesn't shrink unrelated events elsewhere in the day.
-  let cluster: TimedEvent[] = [];
+  let cluster: DaySegment[] = [];
   let clusterEnd = -Infinity;
 
   const flushCluster = () => {
     if (cluster.length === 0) return;
 
-    const columns: { end: number; event: TimedEvent }[][] = [];
-    for (const event of cluster) {
-      const eventStart = getHourFromDateTime(event.start);
+    const columns: DaySegment[][] = [];
+    for (const seg of cluster) {
       let placed = false;
       for (const column of columns) {
         const lastInColumn = column[column.length - 1];
-        if (lastInColumn.end <= eventStart) {
-          column.push({ end: getHourFromDateTime(event.end), event });
+        if (lastInColumn.end <= seg.start) {
+          column.push(seg);
           placed = true;
           break;
         }
       }
       if (!placed) {
-        columns.push([{ end: getHourFromDateTime(event.end), event }]);
+        columns.push([seg]);
       }
     }
 
     const totalColumns = Math.max(columns.length, 1);
     for (let colIdx = 0; colIdx < columns.length; colIdx++) {
-      for (const { event } of columns[colIdx]) {
-        const rawStart = (getHourFromDateTime(event.start) - startHour) * 60;
-        const rawEnd = (getHourFromDateTime(event.end) - startHour) * 60;
-        const eventStartMinutes = Math.max(0, Math.min(rawStart, totalMinutes));
-        const eventEndMinutes = Math.max(eventStartMinutes, Math.min(rawEnd, totalMinutes));
-
+      for (const seg of columns[colIdx]) {
         positioned.push({
-          event,
-          top: (eventStartMinutes / totalMinutes) * 100,
-          height: ((eventEndMinutes - eventStartMinutes) / totalMinutes) * 100,
+          event: seg.event,
+          top: ((seg.start - startHour) / windowHours) * 100,
+          height: ((seg.end - seg.start) / windowHours) * 100,
           column: colIdx,
           totalColumns,
         });
@@ -106,13 +125,12 @@ export function layoutTimedEvents(
     clusterEnd = -Infinity;
   };
 
-  for (const event of sorted) {
-    const eventStart = getHourFromDateTime(event.start);
-    if (cluster.length > 0 && eventStart >= clusterEnd) {
+  for (const seg of segments) {
+    if (cluster.length > 0 && seg.start >= clusterEnd) {
       flushCluster();
     }
-    cluster.push(event);
-    clusterEnd = Math.max(clusterEnd, getHourFromDateTime(event.end));
+    cluster.push(seg);
+    clusterEnd = Math.max(clusterEnd, seg.end);
   }
   flushCluster();
 

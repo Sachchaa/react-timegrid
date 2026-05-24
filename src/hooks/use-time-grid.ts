@@ -40,7 +40,7 @@ export function useTimeGrid(options: UseTimeGridOptions): UseTimeGridReturn {
     const columns: DayColumn[] = dates.map((d) => {
       const timedEvents = getTimedEventsForDate(events, d);
       const allDayEvents = getAllDayEventsForDate(events, d);
-      const positionedEvents = layoutTimedEvents(timedEvents, startHour, endHour);
+      const positionedEvents = layoutTimedEvents(timedEvents, d, startHour, endHour);
 
       return { date: d, positionedEvents, allDayEvents };
     });
