@@ -1,0 +1,318 @@
+@import "tailwindcss";
+
+/*
+ * Pull in the library component source so Tailwind generates the utility
+ * classes used by <Calendar> (it lives outside this app's auto-detected root).
+ */
+@source "../../src/**/*.{ts,tsx}";
+
+/* Class-based dark mode driven by a `.dark` class on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+ * Design tokens.
+ *
+ * The neutral shadcn tokens (`--background`, `--foreground`, …) are the ones
+ * the calendar component reads. We add a violet brand layer on top for the
+ * marketing site. Dark values are provided here so the embedded calendar looks
+ * great in dark mode too.
+ * ------------------------------------------------------------------------- */
+:root {
+  --radius: 0.625rem;
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  /* Brand (violet) */
+  --brand: oklch(0.541 0.244 293.009);
+  --brand-foreground: oklch(0.985 0 0);
+  --brand-muted: oklch(0.962 0.018 293);
+  --brand-2: oklch(0.585 0.233 277);
+
+  /* Syntax highlighting (GitHub light) */
+  --code-fg: #1f2328;
+  --code-comment: #6e7781;
+  --code-keyword: #cf222e;
+  --code-func: #8250df;
+  --code-string: #0a3069;
+  --code-number: #0550ae;
+  --code-prop: #953800;
+  --code-tag: #116329;
+  --code-attr: #0550ae;
+  --code-punc: #57606a;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+
+  --brand: oklch(0.637 0.237 293);
+  --brand-foreground: oklch(0.145 0 0);
+  --brand-muted: oklch(0.27 0.06 293);
+  --brand-2: oklch(0.66 0.2 277);
+
+  /* Syntax highlighting (GitHub dark) */
+  --code-fg: #e6edf3;
+  --code-comment: #8b949e;
+  --code-keyword: #ff7b72;
+  --code-func: #d2a8ff;
+  --code-string: #a5d6ff;
+  --code-number: #79c0ff;
+  --code-prop: #ffa657;
+  --code-tag: #7ee787;
+  --code-attr: #79c0ff;
+  --code-punc: #8b949e;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-2: var(--brand-2);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+
+/* ------------------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--brand) 28%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  /* Subtle, theme-aware scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--foreground) 18%, transparent) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklab, var(--foreground) 18%, transparent);
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Reusable visual helpers
+ * ------------------------------------------------------------------------- */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--foreground) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 7%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@utility bg-dots {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--foreground) 12%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+@utility text-gradient {
+  background: linear-gradient(120deg, var(--brand), var(--brand-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/*
+ * Keep live week/day demos compact and consistent. The library's time grid
+ * ships an 800px internal scroll area; in docs we cap it shorter and let the
+ * demo wrapper auto-scroll it to business hours. (Unlayered, so it wins over
+ * the library's max-h utility without !important.)
+ */
+.tg-demo [aria-label="Time grid"] {
+  max-height: 30rem;
+}
+
+/* ---------------------------------------------------------------------------
+ * Long-form documentation prose. Kept dependency-free (no typography plugin).
+ * ------------------------------------------------------------------------- */
+.prose {
+  color: var(--foreground);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.prose > * + * {
+  margin-top: 1.1em;
+}
+.prose h2 {
+  scroll-margin-top: 6rem;
+  margin-top: 2.75rem;
+  margin-bottom: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.prose h3 {
+  scroll-margin-top: 6rem;
+  margin-top: 2rem;
+  margin-bottom: 0.25rem;
+  font-size: 1.175rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.prose p {
+  color: color-mix(in oklab, var(--foreground) 88%, var(--muted-foreground));
+}
+.prose a {
+  color: var(--brand);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--brand) 40%, transparent);
+  text-underline-offset: 3px;
+}
+.prose a:hover {
+  text-decoration-color: var(--brand);
+}
+.prose strong {
+  color: var(--foreground);
+  font-weight: 650;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose li {
+  margin-top: 0.4em;
+  color: color-mix(in oklab, var(--foreground) 88%, var(--muted-foreground));
+}
+.prose li::marker {
+  color: var(--muted-foreground);
+}
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  font-weight: 500;
+  padding: 0.15em 0.4em;
+  border-radius: 0.375rem;
+  background-color: var(--muted);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+.prose blockquote {
+  border-left: 3px solid var(--brand);
+  padding-left: 1rem;
+  color: var(--muted-foreground);
+  font-style: italic;
+}

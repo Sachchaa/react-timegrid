@@ -149,11 +149,20 @@ The package also exports the underlying hooks for custom implementations:
 - `useTimeGrid({ dates, events })` — Returns `{ columns, timeSlots }` for week/day views: 48 half-hour slots and one column per date with positioned timed events and all-day events.
 - `useEvents({ events, range })` — Returns the events whose date range intersects `range`.
 
+## Documentation
+
+The full documentation site — guides, API reference, and a live playground — lives in
+[`website/`](./website) and is built with Vite + React. It renders the real component for every
+example, and is what gets deployed (replacing the old Storybook-only site). Run it locally with
+`pnpm docs:dev`.
+
 ## Development
 
 ```bash
 pnpm install
-pnpm dev             # Start Storybook
+pnpm dev             # Start Storybook (component workbench)
+pnpm docs:dev        # Start the documentation website
+pnpm docs:build      # Build the documentation website
 pnpm test            # Run tests
 pnpm build           # Build the package
 ```

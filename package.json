@@ -33,6 +33,8 @@
     "build": "tsdown && tsc -p tsconfig.build.json && pnpm run build:css",
     "build:css": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify",
     "dev": "storybook dev -p 6006",
+    "docs:dev": "pnpm -C website dev",
+    "docs:build": "pnpm -C website build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
